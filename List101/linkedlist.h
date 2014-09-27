@@ -172,7 +172,7 @@ public:
         }
     }
 
-    const E& getValue() const //Gets the value of the current nodes
+    const E& getValue() const //Gets the value of the current node
     {
         Q_ASSERT_X(m_cursor != 0, "LinkedList::getValue", "Empty list");
         return m_cursor->content;
