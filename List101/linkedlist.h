@@ -25,7 +25,7 @@ public:
 
     void clear()
     {
-        while(m_head != 0) //Check if the list isn't empty
+        while(m_head != 0) //Checks if the list isn't empty
         {
             m_cursor = m_head;
             m_head = m_head->next;
@@ -36,7 +36,7 @@ public:
         m_position = 0;
     }
 
-    void insert(const E& item) //insert an item after the current node
+    void insert(const E& item) //inserts an item after the current node
     {
         Node<E> * temp = new Node<E>(item);
         if(m_head == 0)
@@ -46,7 +46,7 @@ public:
         else
         {
             temp->next = m_cursor->next;
-            if(m_cursor == m_tail) //move tail to the right if an item was inserted at list's end
+            if(m_cursor == m_tail) //moves tail to the right if an item was inserted at list's end
             {
                 m_tail = temp;
             }
@@ -55,7 +55,7 @@ public:
         }
     }
 
-    void append(const E& item) //insert an item at list's end
+    void append(const E& item) //inserts an item at list's end
     {
         Node<E> *node = new Node<E>(item);
         if(m_head == 0)
@@ -82,7 +82,7 @@ public:
             return 0;
         }
         content = m_cursor->content;
-        if(m_cursor == m_head) //move list's head to the right if head is the one being removed
+        if(m_cursor == m_head) //moves list's head to the right if head is the one being removed
         {
             m_head = m_head->next;
             delete m_cursor;
