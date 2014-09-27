@@ -176,7 +176,6 @@ public:
     {
         Q_ASSERT_X(m_cursor != 0, "LinkedList::getValue", "Empty list");
         return m_cursor->content;
-
     }
 };
 
