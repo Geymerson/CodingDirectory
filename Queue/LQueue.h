@@ -1,7 +1,6 @@
 #ifndef LQUEUE_H
 #define LQUEUE_H
 
-#include <QDebug>
 #include "QueueADT.h"
 #include "Link.h"
 

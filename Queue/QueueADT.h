@@ -8,7 +8,7 @@ private:
     Queue(const Queue&) {} // Protect copy constructor
 public:
     Queue() {} // Default
-    virtual ˜Queue() {} // Base destructor
+    virtual ~Queue() {} // Base destructor
 
     // Reinitialize the queue. The user is responsible for
     // reclaiming the storage used by the queue elements.
