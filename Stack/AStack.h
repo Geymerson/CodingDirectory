@@ -1,6 +1,7 @@
 #ifndef ASTACK_H
 #define ASTACK_H
 
+#include <QDebug>
 #include <StackADT.h>
 
 template<typename E>
@@ -11,7 +12,7 @@ private:
     int m_top;
     E * m_listArray;
 public:
-    AStack()
+    AStack( )
     {
         m_listArray = new E[m_maxSize];
         m_top = 0;
@@ -47,12 +48,14 @@ public:
         }
     }
 
-    void pop()
+    E pop()
     {
         if(m_top != 0)
         {
             return m_listArray[--m_top];
         }
+        qDebug() << "Empty Stack";
+        return 0;
     }
 
     const E& topValue() const
