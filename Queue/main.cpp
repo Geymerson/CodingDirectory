@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "LQueue.h"
 #include <QDebug>
 
@@ -25,4 +26,11 @@ int main()
     //list.dequeue();
 
     return 0;
+=======
+#include <QCoreApplication>
+
+int main()
+{ 
+
+>>>>>>> 635fcdfc9175d62ffd7093e839aa880bd3fd031d
 }

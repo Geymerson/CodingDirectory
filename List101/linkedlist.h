@@ -73,7 +73,7 @@ public:
         m_listSize++;
     }
 
-    E remove() //removes the item at the current node
+    E remove() //removes the item at the current node and return the value removed
     {
         E content;
         Node<E> * temp;
@@ -105,19 +105,19 @@ public:
         return content;
     }
 
-    void moveToStart()
+    void moveToStart() //Sets cursor to list's start
     {
         m_cursor = m_head;
         m_position = 1;
     }
 
-    void moveToEnd()
+    void moveToEnd() //Sets cursor to list's end
     {
         m_cursor = m_tail;
         m_position = m_listSize;
     }
 
-    void prev()
+    void prev() //Moves the cursor one step left
     {
         if(m_cursor != m_head)
         {
@@ -131,7 +131,7 @@ public:
         }
     }
 
-    void next()
+    void next() //Moves the cursor one step right
     {
         if(m_cursor != m_tail)
         {
@@ -140,17 +140,17 @@ public:
         }
     }
 
-    int length() const
+    int length() const //returns list's size
     {
         return m_listSize;
     }
 
-    int currPos() const
+    int currPos() const //returns the current cursor's position
     {
         return m_position;
     }
 
-    void moveToPos(int pos)
+    void moveToPos(int pos) //Moves to the position "pos"
     {
         Q_ASSERT_X((pos >= 1 && pos <= m_listSize), "LinkedList::getValue", "Empty list");
         int i;
@@ -172,7 +172,7 @@ public:
         }
     }
 
-    const E& getValue() const
+    const E& getValue() const //Gets the value of the current node
     {
         Q_ASSERT_X(m_cursor != 0, "LinkedList::getValue", "Empty list");
         return m_cursor->content;
