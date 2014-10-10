@@ -30,6 +30,10 @@ public:
 
     //Return: True if the stack has size 0; otherwise returns false.
     virtual bool isEmpty() = 0;
+
+    //Return: A string which contains the actual state of the stack
+    //Doesn't change the state of the stack!!
+    virtual QString toString() = 0;
 };
 
 #endif // STACKADT_H

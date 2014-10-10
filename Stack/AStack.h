@@ -3,6 +3,8 @@
 
 #include <QDebug>
 #include <StackADT.h>
+#include <QString>
+#include <ctype.h>
 
 template<typename E>
 class AStack: public StackADT<E>
@@ -75,6 +77,33 @@ public:
             return true;
         }
         return false;
+    }
+
+    QString toString()
+    {
+        QString temp, aux;
+        if(isdigit(m_listArray[0]))//If not string, convert and append it to temp
+        {
+            for(int i = 0; i < m_top; i++)
+            {
+                temp.append(aux.setNum(m_listArray[i]));
+                temp.append(' ');
+
+                //The items are being printed
+                // from the last-in to the first-in
+                qDebug() << m_listArray[(m_top - 1) - i];
+            }
+        }
+        else
+        {
+            for(int i = 0; i < m_top; i++)
+            {
+                temp.append(m_listArray[i]); //If not string, convert and append it to temp
+                //temp.append(' ');
+                qDebug() << m_listArray[(m_top - 1) - i];
+            }
+        }
+        return temp; //There is no spaces between the items of temp
     }
 };
 
