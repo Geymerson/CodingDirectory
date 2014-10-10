@@ -87,7 +87,6 @@ public:
             for(int i = 0; i < m_top; i++)
             {
                 temp.append(aux.setNum(m_listArray[i]));
-                temp.append(' ');
 
                 //The items are being printed
                 // from the last-in to the first-in
@@ -99,11 +98,9 @@ public:
             for(int i = 0; i < m_top; i++)
             {
                 temp.append(m_listArray[i]); //If not string, convert and append it to temp
-                //temp.append(' ');
                 qDebug() << m_listArray[(m_top - 1) - i];
             }
         }
-
         return temp; //There is no spaces between the items of temp
     }
 };
