@@ -103,6 +103,7 @@ public:
                 qDebug() << m_listArray[(m_top - 1) - i];
             }
         }
+
         return temp; //There is no spaces between the items of temp
     }
 };
