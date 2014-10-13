@@ -38,14 +38,13 @@ public:
     {
         if(base == 0)
         {
-            qDebug() << "IF 1";
+//            qDebug() << "If 1";
             return true;
         }
         if((base->left != 0 && base->right == 0) ||
            (base->left == 0 && base->right != 0))
         {
-
-            qDebug() << "IF 2";
+//            qDebug() << "If 2";
             return false;
         }
         return isFull(base->right) * isFull(base->left);

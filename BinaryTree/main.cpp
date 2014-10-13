@@ -34,15 +34,13 @@ int main()
     n1->right = n4;
 
     n2->left = n5;
-    n2->right = n6;
+    //n2->right = n6;
 
-    n6->right = n7;
+    //n6->right = n7;
 
     qDebug() << root->isFull(root);
 
     //    qDebug() << root->childCount(root);
-
-
     //    qDebug() << "Altura:" << root->height(root);
     //    root->show(root);
 
