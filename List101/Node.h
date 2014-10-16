@@ -5,12 +5,12 @@ template <typename T>
 class Node
 {
 public:
+    T content;
+    Node *next;
     Node(T content) {
         this->content = content;
         this->next = 0;
     }
-    T content;
-    Node *next;
 };
 
 #endif // NODE_H
