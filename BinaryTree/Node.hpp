@@ -3,6 +3,7 @@
 
 #include <QObject>
 
+<<<<<<< HEAD
 template<class E>
 class Node
 
@@ -12,10 +13,21 @@ private:
     Node *right;
     E content;
 public:
+=======
+template<class E> class Node
+{
+public:
+    E content;
+>>>>>>> 836a9ade65c12ccce9f31a8e31e4a3c996620627
     Node() {
         this->left = 0;
         this->right = 0;
     }
+<<<<<<< HEAD
+=======
+    Node *left;
+    Node *right;
+>>>>>>> 836a9ade65c12ccce9f31a8e31e4a3c996620627
     int height(Node * base) {
         if(base == 0) {
             return 0;
@@ -44,8 +56,13 @@ public:
 //            qDebug() << "If 1";
             return true;
         }
+<<<<<<< HEAD
         else if((base->left != 0 && base->right == 0) ||
            			(base->left == 0 && base->right != 0))
+=======
+        if((base->left != 0 && base->right == 0) ||
+           (base->left == 0 && base->right != 0))
+>>>>>>> 836a9ade65c12ccce9f31a8e31e4a3c996620627
         {
 //            qDebug() << "If 2";
             return false;
