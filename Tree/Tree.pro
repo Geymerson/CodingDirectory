@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2014-09-19T08:15:45
+# Project created by QtCreator 2014-10-16T19:08:15
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core
 
 QT       -= gui
 
-TARGET = List101
+TARGET = Tree
 CONFIG   += console
 CONFIG   -= app_bundle
 
@@ -19,5 +19,5 @@ SOURCES += main.cpp
 
 HEADERS += \
     Node.h \
-    linkedlist.h \
-    listADT.h
+    Tree.h \
+    TreeADT.h

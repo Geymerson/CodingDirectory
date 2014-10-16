@@ -12,6 +12,7 @@ int main()
     llist.append(3);
     llist.insert(9);
     llist.append(4);
+    llist.
 
     for(int i = 1; i <= llist.length(); i++)
     {

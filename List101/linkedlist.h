@@ -1,7 +1,7 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
-#include "list.h"
+#include "listADT.h"
 #include "Node.h"
 #include <QDebug>
 
