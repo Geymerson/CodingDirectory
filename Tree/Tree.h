@@ -12,6 +12,10 @@ private:
     E m_preMaxValue;
     E m_minValue;
     E m_preMinValue;
+    int m_treeSize;
+    int m_leafQuantity;
+    int m_nodeQuantity;
+    int m_currentLevel;
     Node<E> *m_root;
     Node<E> *m_current;
 public:
@@ -20,6 +24,7 @@ public:
         m_root = 0;
         m_minValue = 0;
         m_maxValue = 0;
+        m_nodeQuantity = 0;
         m_current = m_root;
     }
     ~Tree(){}
@@ -70,6 +75,43 @@ public:
                 }
             }
         }
+        m_nodeQuantity++;
+    }
+
+    const E lower()
+    {
+        return m_minValue;
+    }
+
+    const E greater()
+    {
+        return m_maxValue;
+    }
+
+    int countNode() const
+    {
+        return m_nodeQuantity;
+    }
+
+    void toLeft()
+    {
+        if(m_current->left != 0)
+        {
+            m_current = m_current->left;
+        }
+    }
+
+    void toRight()
+    {
+        if(m_current->right != 0)
+        {
+            m_current = m_current->right;
+        }
+    }
+
+    Node<E> getTree() const
+    {
+        return *m_root;
     }
 };
 
