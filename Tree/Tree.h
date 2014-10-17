@@ -8,14 +8,14 @@ template<typename E>
 class Tree: public BinTree<E>
 {
 private:
-    E m_maxValue;
-    E m_preMaxValue;
-    E m_minValue;
-    E m_preMinValue;
+    E m_maxValue; //max value
+    E m_minValue; //min value
+    E m_preMaxValue; //previos max value
+    E m_preMinValue; //previous min value
     int m_treeSize;
     int m_leafQuantity;
     int m_nodeQuantity;
-    int m_currentLevel;
+    int m_levelQuantity;
     Node<E> *m_root;
     Node<E> *m_current;
 public:
@@ -29,9 +29,35 @@ public:
     }
     ~Tree(){}
 
+    void clear()
+    {
+        clearTraversal(m_root);
+        m_root = 0;
+        m_current = m_root;
+        m_minValue = 0;
+        m_maxValue = 0;
+        m_nodeQuantity = 0;
+        m_leafQuantity = 0;
+        m_levelQuantity = 0;
+        m_treeSize = 0;
+    }
+
+    void clearTraversal(Node<E> *root)
+    {
+        Node<E> * temp = root;
+        if(root == 0)
+        {
+            return;
+        }
+        clearTraversal(root->left);
+        clearTraversal(root->right);
+        qDebug() << "Deleting " << temp->content;
+        delete temp;
+    }
+
     void add(const E& item)
     {
-        Node<E> *temp = m_root;
+        Node<E> *temp;
 
         if(item > m_maxValue)
         {
@@ -47,11 +73,13 @@ public:
         if(m_root == 0)
         {
             m_root = new Node<E>(item);
+            temp = m_root;
         }
         else
         {
-            while(item < temp->content && temp->left != 0)
-            {
+            temp = m_root;
+            while((item < temp->content) && (temp->left != 0)) //Moves left while a place to the new node isn't found
+            {                                               //the node is attached to the tree as soon as a space is found
                 temp = temp->left;
                 if(item < temp->content && temp->left == 0)
                 {
@@ -62,8 +90,8 @@ public:
                     temp->right = new Node<E>(item);
                 }
             }
-            while(item > temp->content && temp->right != 0)
-            {
+            while((item > temp->content) && (temp->right != 0)) //Moves right while a place to the new node isn't found
+            {                                               //the node is attached to the tree as soon as a space is found
                 temp = temp->right;
                 if(item < temp->content && temp->left == 0)
                 {
@@ -112,6 +140,11 @@ public:
     Node<E> getTree() const
     {
         return *m_root;
+    }
+
+    E getHere() const
+    {
+        return m_current->content;
     }
 };
 

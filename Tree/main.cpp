@@ -8,5 +8,7 @@ int main()
     A.add(5);
     A.add(2);
     A.add(9);
+
+    A.clear();
     return 0;
 }
