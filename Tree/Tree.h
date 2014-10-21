@@ -43,40 +43,27 @@ public:
         {
             m_root = new Node<E>(item);
         }
-        else if(item < m_root->content && m_root->left == 0)
-        {
-            m_root->left = new Node<E>(item);
-        }
-        else if(item > m_root->content && m_root->right == 0)
-        {
-            m_root->right = new Node<E>(item);
-        }
         else
         {
-            while((item < temp->content) && (temp->left != 0)) //Moves left while a place to the new node isn't found
-            {                                               //the node is attached to the tree as soon as a space is found
-                temp = temp->left;
-                qDebug() << temp->content;
+            while(true)
+            {
                 if(item < temp->content && temp->left == 0)
                 {
                     temp->left = new Node<E>(item);
+                    break;
+                }
+                else if(item < temp->content && temp->left != 0)
+                {
+                    temp = temp->left;
                 }
                 else if(item > temp->content && temp->right == 0)
                 {
                     temp->right = new Node<E>(item);
+                    break;
                 }
-            }
-            while((item > temp->content) && (temp->right != 0)) //Moves right while a place to the new node isn't found
-            {                                               //the node is attached to the tree as soon as a space is found
-                temp = temp->right;
-                qDebug() << temp->content;
-                if(item < temp->content && temp->left == 0)
+                else if(item > temp->content && temp->right != 0)
                 {
-                    temp->left = new Node<E>(item);
-                }
-                else if(item > temp->content && temp->right == 0)
-                {
-                    temp->right = new Node<E>(item);
+                    temp = temp->right;
                 }
             }
         }

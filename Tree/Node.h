@@ -164,7 +164,7 @@ public:
 
     void removeNode(Node *root, E value)
     {
-        if(root != 0)
+        if(root != 0 && root->withinTree(root, value))
         {
             Node *temp1, *temp2, *temp3, *temp4; //variaveis temporarias
             temp1 = getNode(root, value); //procura o Node a ser removido
