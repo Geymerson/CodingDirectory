@@ -9,18 +9,12 @@ template<typename E>
 class Tree: public BinTree<E>
 {
 private:
-    E m_maxValue; //max value
-    E m_minValue; //min value
-    E m_preMaxValue; //previos max value
-    E m_preMinValue; //previous min value
     Node<E> *m_root;
     Node<E> *m_current;
 public:
     Tree()
     {
         m_root = 0;
-        m_minValue = 0;
-        m_maxValue = 0;
         m_current = m_root;
     }
     ~Tree()
@@ -33,8 +27,6 @@ public:
         m_root->clear(m_root);
         m_root = 0;
         m_current = m_root;
-        m_minValue = 0;
-        m_maxValue = 0;
     }
 
     void remove(E item)
@@ -47,16 +39,6 @@ public:
     {
         Node<E> *temp = m_root;
 
-        if(item > m_maxValue)
-        {
-            m_preMaxValue = m_maxValue;
-            m_maxValue = item;
-        }
-        if(item < m_minValue)
-        {
-            m_preMinValue = m_minValue;
-            m_minValue = item;
-        }
         if(m_root == 0)
         {
             m_root = new Node<E>(item);
@@ -102,12 +84,14 @@ public:
 
     const E lower()
     {
-        return m_minValue;
+        Node<E> *temp = m_root->minNode(m_root);
+        return temp->content;
     }
 
     const E greater()
     {
-        return m_maxValue;
+        Node<E> *temp = m_root->maxNode(m_root);
+        return temp->content;
     }
 
     int countNode() const
