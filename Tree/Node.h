@@ -172,13 +172,13 @@ public:
 
             if(temp1->left == 0 && temp1->right == 0) //se for uma folha, remover
             {
-                if(temp2->left->content == temp1->content)
+                if(temp2->right->content == value)
                 {
-                    temp2->left = 0;
+                    temp2->right = 0;
                 }
                 else
                 {
-                    temp2->right = 0;
+                    temp2->left = 0;
                 }
                 delete temp1;
             }
