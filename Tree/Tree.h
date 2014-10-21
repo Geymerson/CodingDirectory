@@ -23,7 +23,10 @@ public:
         m_maxValue = 0;
         m_current = m_root;
     }
-    ~Tree(){}
+    ~Tree()
+    {
+        clear();
+    }
 
     void clear()
     {
@@ -33,6 +36,12 @@ public:
         m_minValue = 0;
         m_maxValue = 0;
     }
+
+    void remove(E item)
+    {
+
+    }
+
 
     void add(const E& item)
     {

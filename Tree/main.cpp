@@ -1,5 +1,6 @@
 #include <QDebug>
 #include "Tree.h"
+#include "Node.h"
 
 int main()
 {
@@ -10,9 +11,12 @@ int main()
     A.add(9);
     A.add(3);
     A.add(7);
+    A.add(1);
 
     qDebug() << "asda" << A.height();
     qDebug() << "asda" << A.countLeaf();
+    qDebug() << A.inTree(0);
+
 
     A.clear();
     return 0;

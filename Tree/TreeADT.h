@@ -16,7 +16,7 @@ public:
     virtual const E greater() = 0;//returns higher value
 //    virtual QString toString() = 0;// print tree
     virtual int countNode() const = 0;//returns number of nodes
-    virtual int countLevel() const = 0;//returns number of levels
+    virtual int countLevel() const   = 0;//returns number of levels
     virtual int countLeaf() const = 0;//return number of leafs
     virtual int height() const = 0;//return size of tree
     virtual Node<E> getTree() const = 0;// returns root

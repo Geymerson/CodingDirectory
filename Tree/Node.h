@@ -2,6 +2,7 @@
 #define NODE_HPP
 
 #include <QObject>
+#include <QDebug>
 
 template<class E>
 class Node
@@ -24,7 +25,8 @@ public:
 
     int height(Node * base)
     {
-        if(base == 0) {
+        if(base == 0)
+        {
             return 0;
         }
         return 1 + qMax<int>(height(base->left), height(base->right));
@@ -80,9 +82,91 @@ public:
         }
         if(node->content == value)
         {
-            return 1;
+            return true;
         }
         return  withinTree(node->left, value) + withinTree(node->right, value);
+    }
+
+    Node *getNode(Node *root, E value)
+    {
+        if(root != 0)
+        {
+            while(root->content != value && root != 0)
+            {
+                if(value < root->content)
+                {
+                    root = root->left;
+                }
+                else if(value > root->content)
+                {
+                    root = root->right;
+                }
+            }
+      }
+      return root;
+    }
+
+    Node *maxNode(Node * root)
+    {
+        if(root != 0)
+        {
+            while(root->right != 0)
+            {
+                root = root->right;
+            }
+            return root;
+        }
+    }
+
+    Node *minNode(Node *root)
+    {
+        if(root != 0)
+        {
+            while(root->left != 0)
+            {
+                root = root->left;
+            }
+            return root;
+        }
+    }
+
+    Node *nodeAbove(Node *root, E value)
+    {
+        if(root != 0 &&
+            (withinTree(root, value)) &&
+                (root->content != value))
+        {
+            while(true)
+            {
+                if(value > root->content && root->right != 0)
+                {
+                    if(root->right->content == value)
+                    {
+                        return root;
+                    }
+                    else
+                    {
+                        root = root->right;
+                    }
+                }
+                else if(value < root->content && root->left != 0)
+                {
+                    if(root->left->content == value)
+                    {
+                        return root;
+                    }
+                    else
+                    {
+                        root = root->left;
+                    }
+                }
+            }
+        }
+    }
+
+    void removeNode(Node *root, E value)
+    {
+
     }
 };
 
