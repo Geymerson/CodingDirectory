@@ -9,7 +9,7 @@ public:
     BinTree() {} //Base constructor
     virtual ~BinTree(){} // Base destructor
     virtual void add(const E& item) = 0; //add in tree
-    //virtual void remove(E item) = 0;//Remove item from the tree
+    virtual void remove(E item) = 0;//Remove item from the tree
     virtual void clear() = 0;//Clean tree
     virtual bool inTree(E item) = 0;//checks if the item is in the tree
     virtual const E lower() = 0;// returns lower value
