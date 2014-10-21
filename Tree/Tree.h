@@ -39,7 +39,7 @@ public:
 
     void remove(E item)
     {
-
+        m_root->removeNode(m_root, item);
     }
 
 

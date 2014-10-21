@@ -17,6 +17,7 @@ int main()
     qDebug() << "asda" << A.countLeaf();
     qDebug() << A.inTree(0);
 
+    A.remove(3);
 
     A.clear();
     return 0;
