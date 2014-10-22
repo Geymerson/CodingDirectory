@@ -20,7 +20,7 @@ public:
     virtual int countLeaf() const = 0;//return number of leafs
     virtual int height() const = 0;//return size of tree
     virtual Node<E> getTree() const = 0;// returns root
-//    virtual void addSubTree(const Node& node) = 0;//add sub tree
+    //virtual void addSubTree(const Node<E>& node) = 0;//add sub tree
     virtual void toLeft() = 0; // Go left
     virtual void toRight() = 0;// Go right
     virtual E getHere() const = 0;// Return value current node

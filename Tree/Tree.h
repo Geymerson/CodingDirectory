@@ -31,9 +31,45 @@ public:
 
     void remove(E item)
     {
+        if(m_current->content == item)
+        {
+            m_current = m_root->nodeAbove(m_root, item);
+        }
         m_root->removeNode(m_root, item);
     }
 
+//    void addSubTree(const Node<E>& node)
+//    {
+//        if(m_root != 0 && (node.content != m_root->content))
+//        {
+//            Node<E> *temp1 = m_root;
+//            Node<E> *temp2 = (Node<E> *) &node;
+
+//            qDebug() << "asdas" << temp2->content;
+
+//            while(true)
+//            {
+//                if(temp2->content < temp1->content && temp1->left == 0)
+//                {
+//                    temp1->left = temp2;
+//                    break;
+//                }
+//                else if(temp2->content < temp1->content && temp1->left != 0)
+//                {
+//                    temp1 = temp1->left;
+//                }
+//                else if(temp2->content > temp1->content && temp1->right == 0)
+//                {
+//                    temp1->right = temp2;
+//                    break;
+//                }
+//                else if(temp2->content > temp1->content && temp1->right != 0)
+//                {
+//                    temp1 = temp1->right;
+//                }
+//            }
+//        }
+//    }
 
     void add(const E& item)
     {
@@ -83,7 +119,11 @@ public:
 
     int countNode() const
     {
-        return m_root->childCount(m_root);
+        if(m_root != 0)
+        {
+            return m_root->childCount(m_root);
+        }
+        return 0;
     }
 
     void toLeft()
@@ -109,12 +149,19 @@ public:
 
     E getHere() const
     {
-        return m_current->content;
+        if(m_root != 0)
+        {
+            return m_current->content;
+        }
     }
 
     int height() const
     {
-        return m_root->height(m_root);
+        if(m_root != 0)
+        {
+            return m_root->height(m_root);
+        }
+        return 0;
     }
 
     int countLevel() const
@@ -128,14 +175,21 @@ public:
 
     int countLeaf() const
     {
-        return m_root->leafCount(m_root);
+        if(m_root != 0)
+        {
+            return m_root->leafCount(m_root);
+        }
+        return 0;
     }
 
     bool inTree(E item)
     {
-        return m_root->withinTree(m_root, item);
+        if(m_root != 0)
+        {
+            return m_root->withinTree(m_root, item);
+        }
+        return 0;
     }
-
 };
 
 #endif // TREE_H

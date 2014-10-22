@@ -70,11 +70,11 @@ public:
         }
         clear(root->left);
         clear(root->right);
-        qDebug() << "Deleting " << root->content;
+        //qDebug() << "Deleting " << root->content;
         delete root;
     }
 
-    bool withinTree(Node *node, E value) //verifica se "value" pertence a arvore
+    bool withinTree(Node *node, E value) //verifica se "value" pertence a árvore
     {
         if(node == 0)
         {
@@ -87,7 +87,7 @@ public:
         return  withinTree(node->left, value) + withinTree(node->right, value);
     }
 
-    Node *getNode(Node *root, E value) //procura o node que contem o valor "item" na arvore
+    Node *getNode(Node *root, E value) //procura o node que contem o valor "item" na árvore
     {
         if(root != 0)
         {
@@ -106,7 +106,7 @@ public:
       return root;
     }
 
-    Node *maxNode(Node * root) //procura o maior valor da arvore
+    Node *maxNode(Node * root) //procura o maior valor da árvore
     {
         if(root != 0)
         {
@@ -118,7 +118,7 @@ public:
         return root;
     }
 
-    Node *minNode(Node *root) //Procura o menor valor a arvore
+    Node *minNode(Node *root) //Procura o menor valor da árvore
     {
         if(root != 0)
         {
@@ -132,8 +132,8 @@ public:
 
     Node *nodeAbove(Node *root, E value)
     {
-        if(root != 0 && (withinTree(root, value)) && (root->content != value)) //A funçao apenas executa
-        {                                                                      //se o item pertencer arvore e nao for a raiz
+        if(root != 0 && (withinTree(root, value)) && (root->content != value)) //A funçao apenas executa se value
+        {                                                                      //pertencer a árvore e não é a raiz
             while(true)
             {
                 if(value > root->content && root->right != 0)
@@ -166,9 +166,9 @@ public:
     {
         if(root != 0 && root->withinTree(root, value))
         {
-            Node *temp1, *temp2, *temp3, *temp4; //variaveis temporarias
-            temp1 = getNode(root, value); //procura o Node a ser removido
-            temp2 = nodeAbove(root, value); //procura o Node acima daquele a ser removido
+            Node *temp1, *temp2, *temp3, *temp4; //variáveis temporárias
+            temp1 = getNode(root, value); //procura o nó a ser removido
+            temp2 = nodeAbove(root, value); //procura o nó acima daquele a ser removido
 
             if(temp1->left == 0 && temp1->right == 0) //se for uma folha, remover
             {
@@ -192,12 +192,12 @@ public:
                 temp2->right = temp1->right;
                 delete temp1;
             }
-            else
+            else //O nó a ser removido tem ambos os filhos
             {
-                temp3 = minNode(temp1->right);
+                temp3 = minNode(temp1->right); //Procura o menor valor do lado direio da árvore
                 if(temp3->right != 0)
                 {
-                    temp4 = nodeAbove(root, temp3->content);
+                    temp4 = nodeAbove(root, temp3->content); //Nó acima do menor nó do lado direito da árvore
                     if(temp4->left->content == temp3->content)
                     {
                         temp4->right = temp3->right;
