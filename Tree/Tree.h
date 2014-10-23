@@ -38,38 +38,38 @@ public:
         m_root->removeNode(m_root, item);
     }
 
-//    void addSubTree(const Node<E>& node)
-//    {
-//        if(m_root != 0 && (node.content != m_root->content))
-//        {
-//            Node<E> *temp1 = m_root;
-//            Node<E> *temp2 = (Node<E> *) &node;
+    void addSubTree(Node<E> *node)
+    {
+        if(m_root != 0 && (node->content != m_root->content))
+        {
+            Node<E> *temp1 = m_root;
+            Node<E> *temp2 = node;
 
-//            qDebug() << "asdas" << temp2->content;
+            qDebug() << "asdas" << temp2->content;
 
-//            while(true)
-//            {
-//                if(temp2->content < temp1->content && temp1->left == 0)
-//                {
-//                    temp1->left = temp2;
-//                    break;
-//                }
-//                else if(temp2->content < temp1->content && temp1->left != 0)
-//                {
-//                    temp1 = temp1->left;
-//                }
-//                else if(temp2->content > temp1->content && temp1->right == 0)
-//                {
-//                    temp1->right = temp2;
-//                    break;
-//                }
-//                else if(temp2->content > temp1->content && temp1->right != 0)
-//                {
-//                    temp1 = temp1->right;
-//                }
-//            }
-//        }
-//    }
+            while(true)
+            {
+                if(temp2->content < temp1->content && temp1->left == 0)
+                {
+                    temp1->left = temp2;
+                    break;
+                }
+                else if(temp2->content < temp1->content && temp1->left != 0)
+                {
+                    temp1 = temp1->left;
+                }
+                else if(temp2->content > temp1->content && temp1->right == 0)
+                {
+                    temp1->right = temp2;
+                    break;
+                }
+                else if(temp2->content > temp1->content && temp1->right != 0)
+                {
+                    temp1 = temp1->right;
+                }
+            }
+        }
+    }
 
     void add(const E& item)
     {
@@ -78,6 +78,7 @@ public:
         if(m_root == 0)
         {
             m_root = new Node<E>(item);
+            m_current = m_root;
         }
         else
         {
@@ -142,9 +143,9 @@ public:
         }
     }
 
-    Node<E> getTree() const
+    Node<E> *getTree() const
     {
-        return *m_root;
+        return m_root;
     }
 
     E getHere() const
