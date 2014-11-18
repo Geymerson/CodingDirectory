@@ -17,8 +17,8 @@ TEMPLATE = app
 
 HEADERS += \
 	Node.h \
-	Tree.h \
-	TreeADT.h \
+        Tree.h \
+        TreeADT.h \
 	Encoding.h \
     Encoding.h \
     ListADT.h \

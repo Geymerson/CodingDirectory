@@ -73,6 +73,43 @@ public:
         m_listSize++;
     }
 
+    void pInsert(const E& item, const int& count, Node<E> *pointer)
+    {
+        Node<E> * temp = new Node<E>(item, count, pointer);
+        if(m_head == 0)
+        {
+            this->pAppend(item, count, pointer);
+        }
+        else
+        {
+            temp->next = m_cursor->next;
+            if(m_cursor == m_tail) //moves tail to the right if an item was inserted at list's end
+            {
+                m_tail = temp;
+            }
+            m_cursor->next = temp;
+            m_listSize++;
+        }
+    }
+
+    void pAppend(const E& item, const int& count, Node<E> *pointer)
+    {
+        Node<E> *node = new Node<E>(item, count, pointer);
+        if(m_head == 0)
+        {
+            m_head = node;
+            m_tail = m_head;
+            m_cursor = m_head;
+            m_position++;
+        }
+        else
+        {
+            m_tail->next = node;
+            m_tail = m_tail->next;
+        }
+        m_listSize++;
+    }
+
     E remove() //removes the item at the current node and return the value removed
     {
         E content;
@@ -150,6 +187,11 @@ public:
         return m_position;
     }
 
+    Node<E> *getCursor() const
+    {
+        return m_cursor;
+    }
+
     void moveToPos(int pos) //Moves to the position "pos"
     {
         Q_ASSERT_X((pos >= 1 && pos <= m_listSize), "LinkedList::getValue", "Empty list");
@@ -175,35 +217,62 @@ public:
     const E& getValue() const //Gets the value of the current node
     {
         Q_ASSERT_X(m_cursor != 0, "LinkedList::getValue", "Empty list");
+        //qDebug() << m_cursor->quantity << ';' <<m_cursor->content;
         return m_cursor->content;
+    }
+
+    const int& getQuantity() const //Gets the value of the current node
+    {
+        Q_ASSERT_X(m_cursor != 0, "LinkedList::getValue", "Empty list");
+        //qDebug() << m_cursor->quantity << ';' <<m_cursor->content;
+        return m_cursor->quantity;
     }
 
     void bubbleSort()
     {
-        int swapped, i;
-        Node<E> *aux1 = m_head;
+        int aux1;
+        E aux2;
+        Node<E> *aux3;
+        Node<E> *temp = m_head;
 
-        /* Checking for empty list */
-        if (aux1 == NULL)
+        bool swap = true;
+
+        if(temp == 0)
         {
             return;
         }
-        do
+
+        while(swap)
         {
-            swapped = 0;
-            while (aux1->next != 0)
+            swap = false;
+            while(temp->next != 0)
             {
-                if (aux1->content > aux1->next->content)
+                aux1 = temp->quantity;
+                aux2 = temp->content;
+                aux3 = temp->right;
+
+                if(temp->quantity > temp->next->quantity)
                 {
-                    i = aux1->content;
-                    aux1->content = aux1->next->content;
-                    aux1->next->content = i;
-                    swapped = 1;
+                    temp->quantity = temp->next->quantity;
+                    temp->content = temp->next->content;
+                    temp->right = temp->next->right;
+
+                    temp->next->quantity = aux1;
+                    temp->next->content = aux2;
+                    temp->next->right = aux3;
+
+                    swap = true;
                 }
-                aux1 = aux1->next;
+                temp = temp->next;
             }
+            temp = m_head;
         }
-        while(swapped);
+
+//        for(int i = 0; i < this->length(); i++)
+//        {
+//            qDebug() << this->getValue() << ';' << this->getQuantity();
+//            this->next();
+//        }
     }
 };
 

@@ -3,6 +3,8 @@
 // Third Edition (C++)" by Clifford A. Shaffer.
 // Source code Copyright (C) 2007-2011 by Clifford A. Shaffer.
 
+#include "Node.h"
+
 
 template <typename E> class List { // List ADT
 private:
@@ -18,10 +20,22 @@ public:
     // Insert an element at the current location.
     // item: The element to be inserted
     virtual void insert(const E& item, const int& count) = 0;
+
+    // Insert an element at the current location.
+    // item: The element to be inserted
+    // count: The number of times that that item has appeared
+    // pointer: A pointer to be pointed to a list node
+    virtual void pInsert(const E& item, const int& count, Node<E> *pointer) = 0;
     
     // Append an element at the end of the list.
     // item: The element to be appended.
     virtual void append(const E& item, const int& count) = 0;
+
+    // Append an element at the end of the list.
+    // item: The element to be appended.
+    // count: The number of times that that item has appeared
+    // pointer: A pointer to be pointed to a list node
+    virtual void pAppend(const E& item, const int& count, Node<E> *pointer) = 0;
     
     // Remove and return the current element.
     // Return: the element that was removed.
@@ -46,6 +60,8 @@ public:
     
     // Return: The position of the current element.
     virtual int currPos() const = 0;
+
+    virtual Node<E> *getCursor() const = 0;
     
     // Set current position.
     // pos: The position to make current.
@@ -53,6 +69,9 @@ public:
     
     // Return: The current element.
     virtual const E& getValue() const = 0;
+
+    // Return: The current element quantity.
+    virtual const int& getQuantity() const = 0;
 
     //Sort the list using the Bubble Sort algorithm
     virtual void bubbleSort() = 0;

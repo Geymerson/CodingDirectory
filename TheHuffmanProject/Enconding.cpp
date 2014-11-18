@@ -3,12 +3,14 @@
 #include <QDebug>
 #include "Encoding.h"
 #include "LinkedList.h"
+#include "Tree.h"
+
 
 int encoding(QString fileName)
 {
     int count[256] = {0};
     QFile file(fileName);
-    LinkedList<int> temp;
+    LinkedList<int> list;
 
     if(!file.open(QIODevice::ReadOnly))
     {
@@ -30,14 +32,44 @@ int encoding(QString fileName)
     {
         if(count[j])
         {
-            qDebug() << count[j] << j;
-            temp.insert(j, count[j]); //inserting character, character quantity in a linked list
+            //qDebug() << count[j] << j;
+            list.insert(j, count[j]); //inserting character, character quantity in a linked list
         }
     }
 
+//################### building of the tree #########################
 
-//############# Ordenação da lista #############
+    Node<int> *temp, *root;
+    int sum = 0;
 
+    list.bubbleSort();
 
+    sum = list.getQuantity();
+    list.next();
+    sum += list.getQuantity();
+
+    list.moveToStart();
+
+    temp = new Node<int>(0, sum);
+    temp->left = new Node<int>(list.getValue(), list.getQuantity());
+    list.remove();
+    temp->right = new Node<int>(list.getValue(), list.getQuantity());
+    list.remove();
+
+    list.pInsert(temp->content, temp->quantity, temp);
+
+//    for(int i = 0; i < temp.length(); i++)
+//    {
+//        temp.getValue();
+//        temp.next();
+//    }
+//    temp.moveToStart();
+//    temp.bubbleSort();
+//    qDebug() << endl;
+//    for(int i = 0; i < temp.length(); i++)
+//    {
+//        temp.getValue();
+//        temp.next();
+//    }
     return 0;
 }

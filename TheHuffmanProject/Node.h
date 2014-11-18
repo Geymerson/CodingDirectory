@@ -17,6 +17,7 @@ public:
     Node *next;
     Node *left;
     Node *right;
+
     Node()
     {
         this->next = 0;
@@ -33,6 +34,15 @@ public:
         this->right = 0;
     }
 
+    Node(const E& value, const int& count, Node *ptr)
+    {
+        this->content = value;
+        this->quantity = count;
+        this->right = ptr;
+        this->next = 0;
+        this->left = 0;
+    }
+
     int height(Node * base)
     {
         if(base == 0)
@@ -40,16 +50,6 @@ public:
             return 0;
         }
         return 1 + qMax<int>(height(base->left), height(base->right));
-    }
-
-    void show(Node *base)
-    {
-        if(base == 0) {
-            return;
-        }
-        show(base->left);
-        show(base->right);
-        qDebug() << "Node:" << base->content;
     }
 
     int leafCount(Node *base)
@@ -74,19 +74,6 @@ public:
         clear(root->right);
         //qDebug() << "Deleting " << root->content;
         delete root;
-    }
-
-    bool withinTree(Node *node, E value) //verifica se "value" pertence a árvore
-    {
-        if(node == 0)
-        {
-            return 0;
-        }
-        if(node->content == value)
-        {
-            return true;
-        }
-        return  withinTree(node->left, value) + withinTree(node->right, value);
     }
 
     Node *getNode(Node *root, E value) //procura o node que contem o valor "item" na árvore

@@ -2,6 +2,7 @@
 
 int main()
 {
+
     encoding("test.txt");
 
 //    int count[256] = {0};
