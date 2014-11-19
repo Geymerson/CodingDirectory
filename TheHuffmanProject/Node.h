@@ -72,7 +72,7 @@ public:
         }
         clear(root->left);
         clear(root->right);
-        //qDebug() << "Deleting " << root->content;
+        qDebug() << "Deleting " << root->content;
         delete root;
     }
 

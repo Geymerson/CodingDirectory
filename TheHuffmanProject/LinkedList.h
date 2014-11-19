@@ -192,6 +192,11 @@ public:
         return m_cursor;
     }
 
+    Node<E> *getPointer() const
+    {
+        return m_cursor->right;
+    }
+
     void moveToPos(int pos) //Moves to the position "pos"
     {
         Q_ASSERT_X((pos >= 1 && pos <= m_listSize), "LinkedList::getValue", "Empty list");
@@ -251,17 +256,35 @@ public:
                 aux2 = temp->content;
                 aux3 = temp->right;
 
-                if(temp->quantity > temp->next->quantity)
+                if(temp->quantity >= temp->next->quantity)
                 {
-                    temp->quantity = temp->next->quantity;
-                    temp->content = temp->next->content;
-                    temp->right = temp->next->right;
+                    if(temp->quantity == temp->next->quantity)
+                    {
+                        if(temp->content > temp->next->content)
+                        {
+                            temp->quantity = temp->next->quantity;
+                            temp->content = temp->next->content;
+                            temp->right = temp->next->right;
 
-                    temp->next->quantity = aux1;
-                    temp->next->content = aux2;
-                    temp->next->right = aux3;
+                            temp->next->quantity = aux1;
+                            temp->next->content = aux2;
+                            temp->next->right = aux3;
 
-                    swap = true;
+                            swap = true;
+                        }
+                    }
+                    else
+                    {
+                        temp->quantity = temp->next->quantity;
+                        temp->content = temp->next->content;
+                        temp->right = temp->next->right;
+
+                        temp->next->quantity = aux1;
+                        temp->next->content = aux2;
+                        temp->next->right = aux3;
+
+                        swap = true;
+                    }
                 }
                 temp = temp->next;
             }
