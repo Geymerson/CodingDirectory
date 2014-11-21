@@ -21,7 +21,7 @@ int encoding(QString fileName)
     while (!file.atEnd())
     {
         QByteArray line = file.readLine(1024);
-        for(int i = 0; i < line.size(); ++i)
+        for(int i = 0; i < line.size() - 1; ++i)
         {
             ++count[(unsigned char) line.at(i)];
         }
@@ -30,11 +30,17 @@ int encoding(QString fileName)
     {
         if(count[j])
         {
-            //qDebug() << count[j] << j;
+            qDebug() << count[j] << j;
             //QString ch = QString::number(j,16);
             //qDebug() << ch;
             list.insert(j, count[j]); //inserting character, character quantity in a linked list
         }
+    }
+
+    for(int i = 0; i < list.length(); i++)
+    {
+        qDebug() << list.getValue();
+        list.next();
     }
 
 //################### building of the tree #########################
@@ -91,13 +97,15 @@ int encoding(QString fileName)
     QByteArray k;
     QByteArray *test = &k;
 
+    qDebug() << tree->leafCount(tree);
+
     toString(tree, test);
 
-    //qDebug() << k;
-    for(int i = 0; i < k.size(); i++)
-    {
-        qDebug() << k[i];
-    }
+    qDebug() << k;
+//    for(int i = 0; i < k.size(); i++)
+//    {
+//        qDebug() << k[i];
+//    }
     return 0;
 }
 
@@ -107,10 +115,12 @@ void toString(Node<int> *tree, QByteArray *k)
     {
         if(tree->content == 40)
         {
+            qDebug() << "if 1";
             k->append(42).append(tree->content);
         }
         else
         {
+            qDebug() << "if 2";
             k->append(tree->content);
         }
         return;
