@@ -52,6 +52,26 @@ public:
         return 1 + qMax<int>(height(base->left), height(base->right));
     }
 
+    void show(Node *base)
+    {
+        if(base == 0)
+        {
+            return;
+        }
+        qDebug() << base->content;
+        base->show(base->left);
+        base->show(base->right);
+    }
+
+    bool isLeaf(Node *base)
+    {
+        if(base->left == 0 && base->right == 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
     int leafCount(Node *base)
     {
         if(base == 0) {
@@ -94,31 +114,6 @@ public:
       }
       return root;
     }
-
-    Node *maxNode(Node * root) //procura o maior valor da árvore
-    {
-        if(root != 0)
-        {
-            while(root->right != 0)
-            {
-                root = root->right;
-            }
-        }
-        return root;
-    }
-
-    Node *minNode(Node *root) //Procura o menor valor da árvore
-    {
-        if(root != 0)
-        {
-            while(root->left != 0)
-            {
-                root = root->left;
-            }
-        }
-        return root;
-    }
-
 
     void removeNode(Node *root, E value)
     {

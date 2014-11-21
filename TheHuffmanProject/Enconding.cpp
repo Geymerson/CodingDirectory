@@ -17,7 +17,7 @@ int encoding(QString fileName)
         qDebug() << "The file could not be read";
         return 1;
     }
-//############# Contagem de caracteres e criação da lista ligada #############
+//############# Character count and making the the linked list #############
 
     while (!file.atEnd())
     {
@@ -32,13 +32,15 @@ int encoding(QString fileName)
     {
         if(count[j])
         {
-            qDebug() << count[j] << j;
+            //qDebug() << count[j] << j;
+            //QString ch = QString::number(j,16);
+            //qDebug() << ch;
             list.insert(j, count[j]); //inserting character, character quantity in a linked list
         }
     }
 
 //################### building of the tree #########################
-
+//Do not to forget to delete the tree to clear the memory
     Node<int> *tree;
     int sum;
 
@@ -47,18 +49,18 @@ int encoding(QString fileName)
     while(list.length() != 1)
     {
         //qDebug() << "In the Loop";
-        list.bubbleSort();
+        list.bubbleSort();//Ordenate the list
        //qDebug() << "In the Loop";
 
         sum = list.getQuantity();
         list.next();
-        sum += list.getQuantity();
+        sum += list.getQuantity(); //Get the sum of two nodes
 
        //qDebug() << "sum:" << sum;
 
-        list.moveToStart();
+        list.moveToStart(); //moves to the start of the list
 
-        tree = new Node<int>(0, sum);
+        tree = new Node<int>(0, sum); //creating a node
 
         //qDebug() << "In the Loop";
 
@@ -87,25 +89,34 @@ int encoding(QString fileName)
         list.pInsert(tree->content, tree->quantity, tree);
     }
 
+
     //tree->clear(tree);
     //qDebug() << tree->leafCount(tree);
 
 //##############################################################
 
+//    QFile treeFile("tree.huffman");
+//    treeFile.open(QIODevice::WriteOnly);
+//    QTextStream out(&treeFile);
+//    out << "Sample: " << 49 << "\n";
+//    treeFile.close();
+    //tree->show(tree);
 
 
-//    for(int i = 0; i < temp.length(); i++)
-//    {
-//        temp.getValue();
-//        temp.next();
-//    }
-//    temp.moveToStart();
-//    temp.bubbleSort();
-//    qDebug() << endl;
-//    for(int i = 0; i < temp.length(); i++)
-//    {
-//        temp.getValue();
-//        temp.next();
-//    }
+
     return 0;
+}
+
+QByteArray toString(Node<int> *tree, QByteArray k)
+{
+    if(!tree->isLeaf(tree))
+    {
+        k.append('!');
+    }
+
+    toString(tree->left, k);
+    toString(tree->right, k);
+
+    k.append(40);
+    return k;
 }

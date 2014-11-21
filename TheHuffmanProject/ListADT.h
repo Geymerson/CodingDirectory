@@ -61,6 +61,7 @@ public:
     // Return: The position of the current element.
     virtual int currPos() const = 0;
 
+    //Get
     virtual Node<E> *getCursor() const = 0;
 
     virtual Node<E> *getPointer() const = 0;

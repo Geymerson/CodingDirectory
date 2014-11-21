@@ -187,12 +187,12 @@ public:
         return m_position;
     }
 
-    Node<E> *getCursor() const
+    Node<E> *getCursor() const //return the current position pointer
     {
         return m_cursor;
     }
 
-    Node<E> *getPointer() const
+    Node<E> *getPointer() const //get the the pointer of the right children of the node
     {
         return m_cursor->right;
     }
