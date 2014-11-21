@@ -24,5 +24,5 @@ HEADERS += \
 
 
 SOURCES += main.cpp \
-    Enconding.cpp
+    Encoding.cpp
 

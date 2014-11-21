@@ -3,9 +3,9 @@
 
 #include <QString>
 #include "Node.h"
-
+#include <QByteArray>
 
 int encoding(QString fileName);
-QByteArray toString(Node<int> *tree, QByteArray k);
+void toString(Node<int> *tree, QByteArray *k);
 
 #endif // ENCODING_H

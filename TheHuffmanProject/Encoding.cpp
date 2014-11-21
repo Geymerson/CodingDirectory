@@ -3,7 +3,6 @@
 #include <QDebug>
 #include "Encoding.h"
 #include "LinkedList.h"
-#include "Tree.h"
 
 
 int encoding(QString fileName)
@@ -27,7 +26,6 @@ int encoding(QString fileName)
             ++count[(unsigned char) line.at(i)];
         }
     }
-
     for(int j = 0; j < 256; ++j) // "j"represents the character
     {
         if(count[j])
@@ -43,27 +41,19 @@ int encoding(QString fileName)
 //Do not to forget to delete the tree to clear the memory
     Node<int> *tree;
     int sum;
-
-    qDebug() << "Before the Loop";
-
+    //qDebug() << "Before the Loop";
     while(list.length() != 1)
     {
         //qDebug() << "In the Loop";
         list.bubbleSort();//Ordenate the list
        //qDebug() << "In the Loop";
-
         sum = list.getQuantity();
         list.next();
         sum += list.getQuantity(); //Get the sum of two nodes
-
        //qDebug() << "sum:" << sum;
-
         list.moveToStart(); //moves to the start of the list
-
         tree = new Node<int>(0, sum); //creating a node
-
         //qDebug() << "In the Loop";
-
         if(list.getPointer())
         {
             tree->left = list.getPointer();
@@ -72,9 +62,7 @@ int encoding(QString fileName)
         {
             tree->left = new Node<int>(list.getValue(), list.getQuantity());
         }
-
         list.remove();
-
         if(list.getPointer())
         {
             tree->right = list.getPointer();
@@ -83,9 +71,7 @@ int encoding(QString fileName)
         {
             tree->right = new Node<int>(list.getValue(), list.getQuantity());
         }
-
         list.remove();
-
         list.pInsert(tree->content, tree->quantity, tree);
     }
 
@@ -102,21 +88,35 @@ int encoding(QString fileName)
 //    treeFile.close();
     //tree->show(tree);
 
+    QByteArray k;
+    QByteArray *test = &k;
 
+    toString(tree, test);
 
+    //qDebug() << k;
+    for(int i = 0; i < k.size(); i++)
+    {
+        qDebug() << k[i];
+    }
     return 0;
 }
 
-QByteArray toString(Node<int> *tree, QByteArray k)
+void toString(Node<int> *tree, QByteArray *k)
 {
-    if(!tree->isLeaf(tree))
+    if(tree->isLeaf(tree))
     {
-        k.append('!');
+        if(tree->content == 40)
+        {
+            k->append(42).append(tree->content);
+        }
+        else
+        {
+            k->append(tree->content);
+        }
+        return;
     }
-
+    k->append(40);
     toString(tree->left, k);
     toString(tree->right, k);
-
-    k.append(40);
-    return k;
+    return;
 }
