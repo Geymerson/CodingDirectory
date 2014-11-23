@@ -5,7 +5,6 @@
 
 #include "Node.h"
 
-
 template <typename E> class List { // List ADT
 private:
     //void operator =(const List&) {}      // Protect assignment
@@ -24,7 +23,7 @@ public:
     // Insert an element at the current location.
     // item: The element to be inserted
     // count: The number of times that that item has appeared
-    // pointer: A pointer to be pointed to a list node
+    // pointer: A pointer to be pointed by "current->right" of the current list node
     virtual void pInsert(const E& item, const int& count, Node<E> *pointer) = 0;
     
     // Append an element at the end of the list.
@@ -34,7 +33,7 @@ public:
     // Append an element at the end of the list.
     // item: The element to be appended.
     // count: The number of times that that item has appeared
-    // pointer: A pointer to be pointed to a list node
+    // pointer: A pointer to be pointed by "current->right" of the current list node
     virtual void pAppend(const E& item, const int& count, Node<E> *pointer) = 0;
     
     // Remove and return the current element.
@@ -61,9 +60,10 @@ public:
     // Return: The position of the current element.
     virtual int currPos() const = 0;
 
-    //Get
+    //Return: The cursor position
     virtual Node<E> *getCursor() const = 0;
 
+    //Return: "current->right"
     virtual Node<E> *getPointer() const = 0;
     
     // Set current position.
@@ -78,13 +78,4 @@ public:
 
     //Sort the list using the Bubble Sort algorithm
     virtual void bubbleSort() = 0;
-    
-//    //Sort the list using the Selection Sort algorithm
-//    virtual void selectionSort() = 0;
-    
-//    //Sort the list using the Insertion Sort algorithm
-//    virtual void insertionSort() = 0;
-    
-//    //Sort the list using the Shell Sort algorithm
-//    virtual void shellSort() = 0;
 };

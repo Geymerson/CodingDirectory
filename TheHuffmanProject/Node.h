@@ -3,10 +3,6 @@
 
 #include <QObject>
 #include <QDebug>
-#include <iostream>
-#include <QtCore/qmath.h>
-
-using namespace std;
 
 template<class E>
 class Node
@@ -44,6 +40,7 @@ public:
         this->left = 0;
     }
 
+    //gets the height of the tree
     int height(Node * base)
     {
         if(base == 0)
@@ -64,6 +61,7 @@ public:
         base->show(base->right);
     }
 
+    //checks if the node is a leaf
     bool isLeaf(Node *base)
     {
         if(base->left == 0 && base->right == 0)
@@ -85,7 +83,8 @@ public:
         return leafCount(base->left) + leafCount(base->right);
     }
 
-    void clear(Node *root) //deleta a arvore
+    //clears the tree
+    void clear(Node *root)
     {
         if(root == 0)
         {
@@ -93,11 +92,12 @@ public:
         }
         clear(root->left);
         clear(root->right);
-        qDebug() << "Deleting " << root->content;
+        //qDebug() << "Deleting " << root->content;
         delete root;
     }
 
-    Node *getNode(Node *root, E value) //procura o node que contem o valor "item" na árvore
+    //Searchs for the node that contains "value" in the tree
+    Node *getNode(Node *root, E value)
     {
         if(root != 0)
         {
@@ -116,15 +116,16 @@ public:
       return root;
     }
 
+    //removes the node that contains "value" in the tree
     void removeNode(Node *root, E value)
     {
         if(root != 0 && root->withinTree(root, value))
         {
-            Node *temp1, *temp2, *temp3, *temp4; //variáveis temporárias
-            temp1 = getNode(root, value); //procura o nó a ser removido
-            temp2 = nodeAbove(root, value); //procura o nó acima daquele a ser removido
+            Node *temp1, *temp2, *temp3, *temp4; //temporary variables
+            temp1 = getNode(root, value); //searchs for the node being removed
+            temp2 = nodeAbove(root, value); //searchs for the node above the one being removed
 
-            if(temp1->left == 0 && temp1->right == 0) //se for uma folha, remover
+            if(temp1->left == 0 && temp1->right == 0) //if it's a leaf, remove it.
             {
                 if(temp2->right->content == value)
                 {
@@ -146,12 +147,12 @@ public:
                 temp2->right = temp1->right;
                 delete temp1;
             }
-            else //O nó a ser removido tem ambos os filhos
+            else //The node being removed has it's both children
             {
-                temp3 = minNode(temp1->right); //Procura o menor valor do lado direio da árvore
+                temp3 = minNode(temp1->right); //Searchs the minor node at the right side of the tree
                 if(temp3->right != 0)
                 {
-                    temp4 = nodeAbove(root, temp3->content); //Nó acima do menor nó do lado direito da árvore
+                    temp4 = nodeAbove(root, temp3->content); //Node above the minor node at the right side of the tree
                     if(temp4->left->content == temp3->content)
                     {
                         temp4->right = temp3->right;

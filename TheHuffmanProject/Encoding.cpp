@@ -129,7 +129,7 @@ void charCodification(Node<int> *tree, Node<int> *left, Node<int> *right, QStrin
         }
         if(tree->isLeaf(tree))
         {
-           qDebug() << tree->content << ":"<< *codification;
+           //qDebug() << tree->content << ":"<< *codification;
            codification->remove(codification->size() - 1, 1);
            return;
         }
@@ -140,7 +140,7 @@ void charCodification(Node<int> *tree, Node<int> *left, Node<int> *right, QStrin
     }
 }
 
-
+//Creates the representation of the tree
 void toString(Node<int> *tree, QByteArray *k)
 {
     if(tree->isLeaf(tree))
