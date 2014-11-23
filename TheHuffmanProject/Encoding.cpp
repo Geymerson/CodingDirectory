@@ -24,7 +24,7 @@ int encoding(QString fileName)
     while (!file.atEnd())
     {
         QByteArray line = file.readLine(1024);
-        for(int i = 0; i < line.size() - 1; ++i)
+        for(int i = 0; i < line.size(); ++i)
         {
             ++count[(unsigned char) line.at(i)];
         }
@@ -51,15 +51,14 @@ int encoding(QString fileName)
 //Do not to forget to delete the tree to clear the memory
     Node<int> *tree;
     int sum;
-    //qDebug() << "Before the Loop";
     while(list.length() != 1)
     {
         list.bubbleSort();//Ordenate the list
         sum = list.getQuantity();
         list.next();
-        sum += list.getQuantity(); //Get the sum of two nodes
+        sum += list.getQuantity(); //Holds the sum of the two first nodes quantity
         list.moveToStart(); //moves to the start of the list
-        tree = new Node<int>(0, sum); //creating a node
+        tree = new Node<int>(0, sum);
         if(list.getPointer())
         {
             tree->left = list.getPointer();
@@ -81,38 +80,58 @@ int encoding(QString fileName)
         list.pInsert(tree->content, tree->quantity, tree);
     }
 
-
-    //tree->clear(tree);
-    //qDebug() << tree->leafCount(tree);
-    //    QFile treeFile("tree.huffman");
-    //    treeFile.open(QIODevice::WriteOnly);
-    //    QTextStream out(&treeFile);
-    //    out << "Sample: " << 49 << "\n";
-    //    treeFile.close();
-    //    qDebug() << tree->leafCount(tree);
-    //   tree->show(tree);
-    //    for(int i = 0; i < k.size(); i++)
-    //    {
-    //        qDebug() << k[i];
-    //    }
-
 //############################ Tree representation ##################################
 
-    QByteArray treeRepresentation;
-    toString(tree, &treeRepresentation);
-    qDebug() << treeRepresentation;
+    QByteArray treeRep;
+    treeRepresentation(tree, &treeRep); //treeRep holds the representation of the tree
+    qDebug() << treeRep;
 
-//############################ Generatin the Codification ##########################
+//############################ Generating the Codification ##########################
 
     QString aux;
     LinkedList<QString> codList; //value holds the
-    charCodification(tree, 0, 0, &aux, &codList);
+    charCodification(tree, 0, 0, &aux, &codList); //aux becomes a list holding a char and it's codification
 //    qDebug() << codList.length();
 //    for(int i = 0; i < codList.length(); i++)
 //    {
 //        qDebug() << codList.getValue();
 //        codList.next();
 //    }
+
+
+    QFile codFile("tree.huff");
+    codFile.open(QIODevice::WriteOnly);
+    QTextStream out(&codFile);
+
+    //codFile.close();
+    //codFile.remove();
+
+    file.seek(0); //Move the cursor to the start of the file
+
+    //get.value returns the codification, get.quantity returns the char
+    while (!file.atEnd())
+    {
+        QByteArray line = file.readLine(1024);
+        for(int i = 0; i < line.size() - 1; ++i)
+        {
+            unsigned char ch = (unsigned char) line.at(i);
+            qDebug() << ch;
+            if(ch == codList.getQuantity())
+            {
+                out << codList.getValue();
+            }
+        }
+    }
+//    out << "Sample: " << 49 << "\n";
+//    treeFile.close();
+//    qDebug() << tree->leafCount(tree);
+//    tree->show(tree);
+//    for(int i = 0; i < k.size(); i++)
+//    {
+//        qDebug() << k[i];
+//    }
+
+
 
 
     return 0;
@@ -149,7 +168,7 @@ void charCodification(Node<int> *tree, Node<int> *left, Node<int> *right,
 }
 
 //Creates the representation of the tree
-void toString(Node<int> *tree, QByteArray *k)
+void treeRepresentation(Node<int> *tree, QByteArray *k)
 {
     if(tree->isLeaf(tree))
     {
@@ -164,7 +183,7 @@ void toString(Node<int> *tree, QByteArray *k)
         return;
     }
     k->append(40);
-    toString(tree->left, k);
-    toString(tree->right, k);
+    treeRepresentation(tree->left, k);
+    treeRepresentation(tree->right, k);
     return;
 }

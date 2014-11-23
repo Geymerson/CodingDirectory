@@ -73,6 +73,10 @@ public:
     // Return: The current element.
     virtual const E& getValue() const = 0;
 
+    //Seeks for the value in the list and returns true if it was found.
+    //If value is not in the list, return false
+    virtual bool seekValue(const E& value) = 0;
+
     // Return: The current element quantity.
     virtual const int& getQuantity() const = 0;
 

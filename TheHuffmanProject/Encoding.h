@@ -7,7 +7,7 @@
 #include "LinkedList.h"
 
 int encoding(QString fileName);
-void toString(Node<int> *tree, QByteArray *k);
+void treeRepresentation(Node<int> *tree, QByteArray *k);
 void charCodification(Node<int> *tree, Node<int> *left, Node<int> *right,
                       QString *codification, LinkedList<QString> *list);
 

@@ -9,8 +9,8 @@ class Node
 {
 private:
 public:
-    int quantity;
     E content;
+    int quantity;
     Node *next;
     Node *left;
     Node *right;

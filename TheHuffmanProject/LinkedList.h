@@ -233,6 +233,21 @@ public:
         return m_cursor->quantity;
     }
 
+    bool seekValue(const E& value)
+    {
+        Node<E> *temp = m_head;
+        while(temp != 0)
+        {
+            if(temp->content == value)
+            {
+                m_cursor = temp;
+                return true;
+            }
+            temp = temp->next;
+        }
+        return false;
+    }
+
     void bubbleSort()
     {
         int aux1;
@@ -290,12 +305,6 @@ public:
             }
             temp = m_head;
         }
-
-//        for(int i = 0; i < this->length(); i++)
-//        {
-//            qDebug() << this->getValue() << ';' << this->getQuantity();
-//            this->next();
-//        }
     }
 };
 
