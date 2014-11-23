@@ -5,13 +5,13 @@
 #include "Node.h"
 #include <QDebug>
 
-template<class E>
-class LinkedList : public List<E>
+template<class E, class T>
+class LinkedList : public List<E, T>
 {
 private:
-    Node<E> *m_cursor;
-    Node<E> *m_head;
-    Node<E> *m_tail;
+    Node<E, T> *m_cursor;
+    Node<E, T> *m_head;
+    Node<E, T> *m_tail;
     int m_position;
     int m_listSize;
 public:
@@ -36,9 +36,9 @@ public:
         m_position = 0;
     }
 
-    void insert(const E& item, const int& count) //inserts an item after the current node
+    void insert(const E& item, const T& count) //inserts an item after the current node
     {
-        Node<E> * temp = new Node<E>(item, count);
+        Node<E, T> * temp = new Node<E, T>(item, count);
         if(m_head == 0)
         {
             this->append(item, count);
@@ -55,9 +55,9 @@ public:
         }
     }
 
-    void append(const E& item, const int& count) //inserts an item at list's end
+    void append(const E& item, const T& count) //inserts an item at list's end
     {
-        Node<E> *node = new Node<E>(item, count);
+        Node<E, T> *node = new Node<E, T>(item, count);
         if(m_head == 0)
         {
             m_head = node;
@@ -73,9 +73,9 @@ public:
         m_listSize++;
     }
 
-    void pInsert(const E& item, const int& count, Node<E> *pointer)
+    void pInsert(const E& item, const T& count, Node<E, T> *pointer)
     {
-        Node<E> * temp = new Node<E>(item, count, pointer);
+        Node<E, T> * temp = new Node<E, T>(item, count, pointer);
         if(m_head == 0)
         {
             this->pAppend(item, count, pointer);
@@ -92,9 +92,9 @@ public:
         }
     }
 
-    void pAppend(const E& item, const int& count, Node<E> *pointer)
+    void pAppend(const E& item, const T& count, Node<E, T> *pointer)
     {
-        Node<E> *node = new Node<E>(item, count, pointer);
+        Node<E, T> *node = new Node<E, T>(item, count, pointer);
         if(m_head == 0)
         {
             m_head = node;
@@ -113,7 +113,7 @@ public:
     E remove() //removes the item at the current node and return the value removed
     {
         E content;
-        Node<E> *temp;
+        Node<E, T> *temp;
         if(m_head == 0) //No change is made if the list is empty
         {
             return 0;
@@ -187,12 +187,12 @@ public:
         return m_position;
     }
 
-    Node<E> *getCursor() const //return the current position pointer
+    Node<E, T> *getCursor() const //return the current position pointer
     {
         return m_cursor;
     }
 
-    Node<E> *getPointer() const //get the the pointer of the right children of the node
+    Node<E, T> *getPointer() const //get the the pointer of the right children of the node
     {
         return m_cursor->right;
     }
@@ -226,7 +226,7 @@ public:
         return m_cursor->content;
     }
 
-    const int& getQuantity() const //Gets the value of the current node
+    const T& getQuantity() const //Gets the value of the current node
     {
         Q_ASSERT_X(m_cursor != 0, "LinkedList::getValue", "Empty list");
         //qDebug() << m_cursor->quantity << ';' <<m_cursor->content;
@@ -235,7 +235,7 @@ public:
 
     bool seekValue(const E& value)
     {
-        Node<E> *temp = m_head;
+        Node<E, T> *temp = m_head;
         while(temp != 0)
         {
             if(temp->content == value)
@@ -250,10 +250,10 @@ public:
 
     void bubbleSort()
     {
-        int aux1;
+        T aux1;
         E aux2;
-        Node<E> *aux3;
-        Node<E> *temp = m_head;
+        Node<E, T> *aux3;
+        Node<E, T> *temp = m_head;
 
         bool swap = true;
 

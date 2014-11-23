@@ -20,8 +20,7 @@ HEADERS += \
 	Encoding.h \
     Encoding.h \
     ListADT.h \
-    LinkedList.h \
-    CodNode.h
+    LinkedList.h
 
 
 SOURCES += main.cpp \

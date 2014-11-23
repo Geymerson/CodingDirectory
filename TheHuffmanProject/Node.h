@@ -4,13 +4,13 @@
 #include <QObject>
 #include <QDebug>
 
-template<class E>
+template<class E, class T>
 class Node
 {
 private:
 public:
     E content;
-    int quantity;
+    T quantity;
     Node *next;
     Node *left;
     Node *right;
@@ -22,7 +22,7 @@ public:
         this->right = 0;
     }
 
-    Node(const E& value, const int& count)
+    Node(const E& value, const T& count)
     {
         this->content = value;
         this->quantity = count;
@@ -31,7 +31,7 @@ public:
         this->right = 0;
     }
 
-    Node(const E& value, const int& count, Node *ptr)
+    Node(const E& value, const T& count, Node *ptr)
     {
         this->content = value;
         this->quantity = count;
