@@ -11,6 +11,7 @@ using namespace std;
 template<class E>
 class Node
 {
+private:
 public:
     int quantity;
     E content;
