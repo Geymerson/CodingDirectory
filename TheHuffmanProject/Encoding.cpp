@@ -5,12 +5,11 @@
 #include "Encoding.h"
 #include "LinkedList.h"
 
-
 int encoding(QString fileName)
 {
     int count[256] = {0};
     QFile file(fileName);
-    LinkedList<int> list, list2; //list to creat the tree, list2 to chararcter's codification
+    LinkedList<int> list; //list to creat the tree, list2 to chararcter's codification
 
 //############################## Openning the File ##################################
 
@@ -53,10 +52,9 @@ int encoding(QString fileName)
     Node<int> *tree;
     int sum;
     //qDebug() << "Before the Loop";
-    list.bubbleSort();
-    list2 = list;
     while(list.length() != 1)
     {
+        list.bubbleSort();//Ordenate the list
         sum = list.getQuantity();
         list.next();
         sum += list.getQuantity(); //Get the sum of two nodes
@@ -81,7 +79,6 @@ int encoding(QString fileName)
         }
         list.remove();
         list.pInsert(tree->content, tree->quantity, tree);
-        list.bubbleSort();//Ordenate the list
     }
 
 
@@ -101,19 +98,29 @@ int encoding(QString fileName)
 
 //############################ Tree representation ##################################
 
-    QByteArray k;
-    toString(tree, &k);
-    qDebug() << k;
+    QByteArray treeRepresentation;
+    toString(tree, &treeRepresentation);
+    qDebug() << treeRepresentation;
 
 //############################ Generatin the Codification ##########################
 
-    QString p;
-    charCodification(tree, 0, 0, &p);
+    QString aux;
+    LinkedList<QString> codList; //value holds the
+    charCodification(tree, 0, 0, &aux, &codList);
+//    qDebug() << codList.length();
+//    for(int i = 0; i < codList.length(); i++)
+//    {
+//        qDebug() << codList.getValue();
+//        codList.next();
+//    }
+
+
     return 0;
 }
 
 //Creats the codification of the characters
-void charCodification(Node<int> *tree, Node<int> *left, Node<int> *right, QString *codification)
+void charCodification(Node<int> *tree, Node<int> *left, Node<int> *right,
+                      QString *codification, LinkedList<QString> *list)
 {
     if(tree != 0)
     {
@@ -130,11 +137,12 @@ void charCodification(Node<int> *tree, Node<int> *left, Node<int> *right, QStrin
         if(tree->isLeaf(tree))
         {
            //qDebug() << tree->content << ":"<< *codification;
+            list->insert(*codification, tree->content);
            codification->remove(codification->size() - 1, 1);
            return;
         }
-        charCodification(tree->left, tree->left, tree->right, codification);
-        charCodification(tree->right, tree->left, tree->right, codification);
+        charCodification(tree->left, tree->left, tree->right, codification, list);
+        charCodification(tree->right, tree->left, tree->right, codification, list);
         codification->remove(codification->size() - 1, 1);
         return;
     }
