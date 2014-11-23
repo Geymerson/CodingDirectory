@@ -174,11 +174,11 @@ void treeRepresentation(Node<int> *tree, QByteArray *k)
     {
         if(tree->content == 40)
         {
-            k->append(42).append(tree->content);
+            k->append(QString::number(42, 16)).append(QString::number(tree->content, 16));
         }
         else
         {
-            k->append(tree->content);
+            k->append(QString::number(tree->content, 16));
         }
         return;
     }
