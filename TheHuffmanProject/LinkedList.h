@@ -156,13 +156,14 @@ public:
 
     void prev() //Moves the cursor one step left
     {
-        if(m_cursor != m_head)
+        if((m_head != 0) && (m_cursor != m_head))
         {
-            int i;
+            int i = 1;
             m_cursor = m_head;
-            for(i = 1; i !=  (m_position - 1); i++)
+            while (i != (m_position - 1))
             {
                 m_cursor = m_cursor->next;
+                i++;
             }
             m_position = i;
         }
@@ -236,14 +237,17 @@ public:
     bool seekValue(const E& value)
     {
         Node<E, T> *temp = m_head;
+        int aux = 1;
         while(temp != 0)
         {
             if(temp->content == value)
             {
+                m_position = aux;
                 m_cursor = temp;
                 return true;
             }
             temp = temp->next;
+            aux++;
         }
         return false;
     }
@@ -304,6 +308,26 @@ public:
                 temp = temp->next;
             }
             temp = m_head;
+        }
+    }
+
+    void swap()
+    {
+        if((m_head != 0) && (m_cursor != m_head))
+        {
+            E content = m_cursor->content;
+            T quantity = m_cursor->quantity;
+
+            Node<E, T> *temp = m_cursor;
+            this->prev(); //cursor is now at the previous position
+
+            temp->content = m_cursor->content;
+            temp->quantity = m_cursor->quantity;
+
+            m_cursor->content = content;
+            m_cursor->quantity = quantity;
+
+            qDebug() << temp->content << m_cursor->content << this->currPos();
         }
     }
 };

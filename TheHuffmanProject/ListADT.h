@@ -82,4 +82,7 @@ public:
 
     //Sort the list using the Bubble Sort algorithm
     virtual void bubbleSort() = 0;
+
+    //swaps the current item with the previous
+    virtual void swap() = 0;
 };

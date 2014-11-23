@@ -93,23 +93,25 @@ int encoding(QString fileName)
     charCodification(tree, 0, 0, &aux, &codList); //aux becomes a list holding a char and it's codification
 
 //    qDebug() << codList.length();
+//    codList.moveToEnd();
 //    for(int i = 0; i < codList.length(); i++)
 //    {
-//        qDebug() << codList.getValue() << codList.getQuantity();
-//        codList.next();
+//        qDebug() << codList.getValue() << codList.getQuantity() << codList.currPos();
+//        codList.prev();
 //    }
 
+//    codList.moveToStart();
+//    for(int i = 0; i < codList.length(); i++)
+//    {
+//        qDebug() << codList.getValue() << codList.getQuantity() << codList.currPos();
+//        codList.next();
+//    }
 
     QFile codFile("codFile.huff");
     codFile.open(QIODevice::WriteOnly);
     QTextStream out(&codFile);
-
-    //codFile.close();
-    //codFile.remove();
-
     file.seek(0); //Move the cursor to the start of the file
 
-    //get.value returns the codification, get.quantity returns the char
     while (!file.atEnd())
     {
         QByteArray line = file.readLine(1024);
@@ -119,9 +121,21 @@ int encoding(QString fileName)
             if(codList.seekValue(ch))
             {
                 out << codList.getQuantity();
+                codList.swap();
             }
         }
     }
+
+//    codList.moveToStart();
+//    for(int i = 0; i < codList.length(); i++)
+//    {
+//        qDebug() << codList.getValue() << codList.getQuantity() << codList.currPos();
+//        codList.next();
+//    }
+
+    //codFile.close();
+    //codFile.remove();
+
 //    out << "Sample: " << 49 << "\n";
 //    treeFile.close();
 //    qDebug() << tree->leafCount(tree);
