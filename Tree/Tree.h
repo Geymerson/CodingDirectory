@@ -5,6 +5,7 @@
 #include "Node.h"
 #include <QDebug>
 
+
 template<typename E>
 class Tree: public BinTree<E>
 {
@@ -141,6 +142,11 @@ public:
         {
             m_current = m_current->right;
         }
+    }
+
+    QString toString()
+    {
+        m_root->printTree(m_root);
     }
 
     Node<E> *getTree() const

@@ -3,10 +3,16 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QtCore/qmath.h>
+#include <iostream>
+
+using namespace std;
 
 template<class E>
 class Node
 {
+private:
+   E m_treeVector[10][10]; //vetor usado para toString
 public:
     E content;
     Node *left;
@@ -15,6 +21,10 @@ public:
     {
         this->left = 0;
         this->right = 0;
+        for(int i = 0; i < 10; i++)
+        {
+            m_treeVector[i][0] = false;
+        }
     }
     Node(const E& value)
     {
@@ -70,7 +80,6 @@ public:
         }
         clear(root->left);
         clear(root->right);
-        //qDebug() << "Deleting " << root->content;
         delete root;
     }
 
@@ -130,7 +139,7 @@ public:
         return root;
     }
 
-    Node *nodeAbove(Node *root, E value)
+    Node *nodeAbove(Node *root, E value) //Retorna o pai de um nó
     {
         if(root != 0 && (withinTree(root, value)) && (root->content != value)) //A funçao apenas executa se value
         {                                                                      //pertencer a árvore e não é a raiz
@@ -162,7 +171,7 @@ public:
         }
     }
 
-    void removeNode(Node *root, E value)
+    void removeNode(Node *root, E value) //Remove um nó
     {
         if(root != 0 && root->withinTree(root, value))
         {
@@ -211,6 +220,76 @@ public:
             }
         }
     }
+
+    void scanTree(Node *base, int height) //Faz uma pesquisa na árvore a fim de definir qual nó pertence a
+        {                                   //qual nível de profundidade
+            if(base == 0)
+            {
+                return;
+            }
+
+            int level = height - 1;
+
+            if(level > 0) //bloco de comando que cuida dos ramos vazios
+            {
+                int n = 0;
+
+                if(base->left == 0)
+                {
+                    while(m_treeVector[level - 1][n++] != false) { }
+                    m_treeVector[level - 1][n] = true;
+                    n = 0;
+                }
+                if(base->right == 0)
+                {
+                    while(m_treeVector[level - 1][n++] != false) {}
+                    m_treeVector[level - 1][n] = true;
+                }
+            }
+
+            int i = 0;
+            while(m_treeVector[level][i] != false) //O vetor e percorrido até uma posicao vaga ser encontrada
+            {
+                i++;
+            }
+
+            m_treeVector[level][i] = base->content;
+            m_treeVector[level][++i] = false;
+
+            scanTree(base->left, height - 1);
+            scanTree(base->right, height - 1);
+        }
+
+        void printTree(Node *base) //Printa a árvore binária
+        {
+            scanTree(base, base->height(base));
+
+            int level = base->height(base) - 1;
+
+            for(int i = level; i >= 0; i--)
+            {
+                for(int k = 0; m_treeVector[i][k] != false; k++)
+                {
+                    if(k == 0)
+                    {
+                        for(int j = 0; j < qPow(2, i) - 1; j++)
+                        {
+                            cout << ' ';
+                        }
+                        cout << m_treeVector[i][k];
+                    }
+                    else
+                    {
+                        for(int j = 0; j < (2 * qPow(2, i)) - 1; j++)
+                        {
+                            cout << ' ';
+                        }
+                        cout << m_treeVector[i][k];
+                    }
+                }
+                cout << endl;
+            }
+        }
 };
 
 #endif // NODE_HPP

@@ -14,7 +14,7 @@ public:
     virtual bool inTree(E item) = 0;//checks if the item is in the tree
     virtual const E lower() = 0;// returns lower value
     virtual const E greater() = 0;//returns higher value
-//    virtual QString toString() = 0;// print tree
+    virtual QString toString() = 0;// print tree
     virtual int countNode() const = 0;//returns number of nodes
     virtual int countLevel() const   = 0;//returns number of levels
     virtual int countLeaf() const = 0;//return number of leafs

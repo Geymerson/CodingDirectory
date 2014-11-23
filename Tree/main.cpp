@@ -2,18 +2,11 @@
 #include "Tree.h"
 #include "Node.h"
 
-//toString ainda não implementada
+//A função toString ainda não funciona corretamente
 
 int main()
 {
-    Tree<int> A, B;
-
-    B.add(20);
-    B.add(15);
-    B.add(14);
-    B.add(16);
-
-    Node<int> *temp = B.getTree();
+    Tree<int> A;
 
     A.add(8);
     A.add(6);
@@ -25,18 +18,18 @@ int main()
     A.add(10);
 
 
-    A.addSubTree(temp);
+//    qDebug() << "asda" << A.height();
+//    qDebug() << "asda" << A.countLeaf();
+//    qDebug() << A.inTree(0);
 
-    qDebug() << "asda" << A.height();
-    qDebug() << "asda" << A.countLeaf();
-    qDebug() << A.inTree(0);
+//    qDebug() << A.greater();
+//    A.remove(3);
+//    qDebug() << A.height();
 
-    qDebug() << A.greater();
-    A.remove(3);
-    qDebug() << A.height();
+//    A.clear();
+//    qDebug() << A.height();
 
-    A.clear();
-    qDebug() << A.height();
+    A.toString();
 
     return 0;
 }
