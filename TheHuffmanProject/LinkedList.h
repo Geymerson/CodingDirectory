@@ -23,6 +23,8 @@ public:
         m_position = 0;
     }
 
+    ~LinkedList() { this->clear(); }
+
     void clear()
     {
         while(m_head != 0) //Checks if the list isn't empty
@@ -326,8 +328,7 @@ public:
 
             m_cursor->content = content;
             m_cursor->quantity = quantity;
-
-            qDebug() << temp->content << m_cursor->content << this->currPos();
+            //qDebug() << temp->content << m_cursor->content << this->currPos();
         }
     }
 };
