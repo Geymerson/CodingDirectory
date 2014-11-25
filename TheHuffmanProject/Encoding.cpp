@@ -1,7 +1,5 @@
 #include <QFile>
 #include <QByteArray>
-//#include <QBitArray>
-#include <bitset>
 #include <QDebug>
 #include "Encoding.h"
 #include "LinkedList.h"
@@ -77,7 +75,7 @@ int encoding(QString fileName)
 
     while (!file.atEnd())
     {
-        QByteArray line = file.readLine(1024);
+        QByteArray line = file.readLine(4049);
         for(int i = 0; i < line.size(); ++i)
         {
             ++count[(unsigned char) line.at(i)];
