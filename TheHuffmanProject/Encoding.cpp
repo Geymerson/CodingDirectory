@@ -75,7 +75,7 @@ int encoding(QString fileName)
 
     while (!file.atEnd())
     {
-        QByteArray line = file.readLine(4049);
+        QByteArray line = file.read(8000);
         for(int i = 0; i < line.size(); ++i)
         {
             ++count[(unsigned char) line.at(i)];
@@ -135,60 +135,73 @@ int encoding(QString fileName)
     charCodification(tree, 0, 0, &aux, &codList); //aux becomes a list holding a char and it's codification
 
     QFile codFile("codFile.huff");
-    codFile.open(QIODevice::WriteOnly);
-    QTextStream in1(&codFile);
+    codFile.open(QIODevice::ReadWrite);
+    QByteArray codArray;
+    //QTextStream in1(&codFile);
     file.seek(0); //Move the cursor to the start of the file
-    long int codFileSize = 0;
+    //long int codFileSize = 0;
 
     while (!file.atEnd())
     {
-        QByteArray line = file.readLine(4049);
+        QByteArray line = file.read(8000);
         for(int i = 0; i < line.size(); ++i)
         {
             unsigned char ch = (unsigned char) line.at(i);
             if(codList.seekValue(ch))
             {
-                in1 << codList.getQuantity();
-                QString s = codList.getQuantity();
-                codFileSize += s.size();
+                codArray.append(codList.getQuantity());
+                //QString s = codList.getQuantity();
+                //in1 << s;
+                //codFileSize += s.size();
                 codList.swap();
             }
         }
     }
+    codFile.write(codArray);
 
-    int trash = 8 - (codFileSize % 8);
-    //qDebug() << codFileSize << trash << codFileSize % 8;
+
+    int trash = 0;
+    if(codArray.length() % 8)
+    {
+        trash = 8 - (codArray.length() % 8);
+        for(int i = 0; i < trash; i++)
+        {
+            //qDebug() << "Writting";
+            codFile.write("0");
+            //in1 << "0";
+        }
+    }
+
+    qDebug() << codArray.length() << trash << codArray.length() % 8;
     //qDebug() << QString::number(trash, 2);
 
-    for(int i = 0; i < trash; i++)
-    {
-        in1 << "0";
-    }
-    codFile.close();
-    codFile.open(QIODevice::ReadOnly);
+    //codFile.close();
+    //codFile.open(QIODevice::ReadOnly);
 
-    QFile codFileHex("codFileHex.huff");
-    codFileHex.open(QIODevice::WriteOnly);
-    QTextStream in2(&codFileHex);
+    codFile.seek(0);
+    //QFile codFileHex("codFileHex.huff");
+    //codFileHex.open(QIODevice::WriteOnly);
+    //QTextStream in2(&codFileHex);
 
     QByteArray hexCodification;
     bool ok;
-    long int k = trash + codFileSize;
+    long int k = trash + codArray.length();
     for(long int i = 0; i != k; i += 8)
     {
-        QByteArray line = codFile.readLine(9);
-        hexCodification.append(QString::number(line.toInt(&ok, 2), 16));
+        QByteArray line = codFile.read(8);
+        hexCodification.append(QByteArray::number(line.toInt(&ok, 2), 16));
         //in2 << QString::number(line.toInt(&ok, 2), 16);
         //qDebug() << line;
-        //qDebug() << QString::number(line.toInt(&ok, 2), 16);
+        qDebug() << QByteArray::number(line.toInt(&ok, 2), 16);
     }
 
     qDebug() << hexCodification.length();
-    in2 << hexCodification;
+    qDebug() << hexCodification;
+    //in2 << hexCodification;
 
-    codFileHex.close();
+    //codFileHex.close();
     codFile.close();
-    codFile.remove();
+    //codFile.remove();
     file.close();
     tree->clear(tree);
     return 0;
