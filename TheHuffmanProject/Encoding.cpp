@@ -5,52 +5,52 @@
 #include "LinkedList.h"
 
 //Creates the codification of the characters
-void charCodification(Node<int, int> *tree, Node<int, int> *left,
-                      Node<int, int> *right, QString *codification,
-                      LinkedList<int, QString> *list)
+bool charCodification(Node<int> *tree, Node<int> *left,
+                      Node<int> *right, QString aux[], QString sample)
 {
     if(tree != 0)
     {
-        Node<int, int> *temp = tree;
+        Node<int> *temp = tree;
 
         if(temp == left)
         {
-            codification->append(QString::number(1, 10));
+            sample.append(QString::number(0, 10));
         }
         else if(temp == right)
         {
-            codification->append(QString::number(0, 10));
+            sample.append(QString::number(1, 10));
         }
         if(tree->isLeaf(tree))
         {
-           //qDebug() << tree->content << ":"<< *codification;
-           list->insert(tree->content, *codification);
-           codification->remove(codification->size() - 1, 1);
-           return;
+           aux[tree->content] = sample;
+           //qDebug() << tree->content << ":"<< aux[tree->content];
+           sample.remove(sample.size() - 1, 1);
+           return true;
         }
-        charCodification(tree->left, tree->left, tree->right, codification, list);
-        charCodification(tree->right, tree->left, tree->right, codification, list);
-        codification->remove(codification->size() - 1, 1);
-        return;
+        charCodification(tree->left, tree->left, tree->right, aux, sample);
+        charCodification(tree->right, tree->left, tree->right, aux, sample);
+        sample.remove(sample.size() - 1, 1);
+        return true;
     }
+    return false;
 }
 
 //Creates the representation of the tree
-void treeRepresentation(Node<int, int> *tree, QByteArray *k)
+void treeRepresentation(Node<int> *tree, QByteArray *k)
 {
     if(tree->isLeaf(tree))
     {
         if(tree->content == 40)
         {
-            k->append(QString::number(42, 16)).append(QString::number(tree->content, 16));
+            k->append('*').append((unsigned char)tree->content);
         }
         else
         {
-            k->append(QString::number(tree->content, 16));
+            k->append((unsigned char)tree->content);
         }
         return;
     }
-    k->append(QString::number(40, 16));
+    k->append('(');
     treeRepresentation(tree->left, k);
     treeRepresentation(tree->right, k);
     return;
@@ -61,7 +61,7 @@ int encoding(QString fileName)
 {
     int count[256] = {0};
     QFile file(fileName);
-    LinkedList<int, int> list; //list to create the tree
+    LinkedList<int> list; //list to create the tree
 
 //############################## Openning the File ##################################
 
@@ -91,7 +91,7 @@ int encoding(QString fileName)
 
 //############################### building the tree ##############################
 
-    Node<int, int> *tree;
+    Node<int> *tree;
     int sum;
     while(list.length() != 1)
     {
@@ -100,14 +100,14 @@ int encoding(QString fileName)
         list.next();
         sum += list.getQuantity(); //Holds the sum of the two first nodes quantity
         list.moveToStart(); //moves to the start of the list
-        tree = new Node<int, int>(0, sum);
+        tree = new Node<int>(0, sum);
         if(list.getPointer())
         {
             tree->left = list.getPointer();
         }
         else
         {
-            tree->left = new Node<int, int>(list.getValue(), list.getQuantity());
+            tree->left = new Node<int>(list.getValue(), list.getQuantity());
         }
         list.remove();
         if(list.getPointer())
@@ -116,7 +116,7 @@ int encoding(QString fileName)
         }
         else
         {
-            tree->right = new Node<int, int>(list.getValue(), list.getQuantity());
+            tree->right = new Node<int>(list.getValue(), list.getQuantity());
         }
         list.remove();
         list.pInsert(tree->content, tree->quantity, tree);
@@ -126,80 +126,63 @@ int encoding(QString fileName)
 
     QByteArray treeRep;
     treeRepresentation(tree, &treeRep); //treeRep holds the representation of the tree
-    //qDebug() << treeRep;
+//    qDebug() << treeRep;
+//    qDebug() << treeRep.length();
 
 //############################ Generating the Codification ##########################
 
-    QString aux;
-    LinkedList<int, QString> codList; //value holds the char, quantity holds the codification
-    charCodification(tree, 0, 0, &aux, &codList); //aux becomes a list holding a char and it's codification
+    QString codVector[256], aux1;
+    charCodification(tree, 0, 0, codVector, aux1);//Now CodVector has char's codification
+    int trash;
+
 
     QFile codFile("codFile.huff");
-    codFile.open(QIODevice::ReadWrite);
-    QByteArray codArray;
-    //QTextStream in1(&codFile);
-    file.seek(0); //Move the cursor to the start of the file
-    //long int codFileSize = 0;
-
+    codFile.open(QIODevice::WriteOnly);
+    QByteArray codArray, aux2;
+    file.seek(0); //Move the cursor to the start of the
+    bool ok;
     while (!file.atEnd())
     {
         QByteArray line = file.read(8000);
         for(int i = 0; i < line.size(); ++i)
         {
-            unsigned char ch = (unsigned char) line.at(i);
-            if(codList.seekValue(ch))
+            codArray.append(codVector[(unsigned char) line.at(i)]);
+            if(!(codArray.length() % 8))
             {
-                codArray.append(codList.getQuantity());
-                //QString s = codList.getQuantity();
-                //in1 << s;
-                //codFileSize += s.size();
-                codList.swap();
+                char ch = (unsigned char) codArray.toInt(&ok,2);
+                aux2.append(ch);
+                //qDebug() << codArray;
+                //qDebug() << ch;
+                codArray.clear();
+                if(aux2.length() >= 1000)
+                {
+                    codFile.write(aux2);
+                    aux2.clear();
+                }
+            }
+        }
+        if(file.atEnd())
+        {
+            if(codArray.length() % 8)
+            {
+                trash = 8 - (codArray.length() % 8);
+                //qDebug() << trash << QString::number(trash, 2);
+
+                for(int i = 0; i < trash; i++)
+                {
+                    codArray.append("0");
+                }
+                char ch = (unsigned char)codArray.toInt(&ok, 2);
+                //qDebug() << codArray;
+                //qDebug() << ch;
+                aux2.append(ch);
+                codArray.clear();
             }
         }
     }
-    codFile.write(codArray);
 
-
-    int trash = 0;
-    if(codArray.length() % 8)
-    {
-        trash = 8 - (codArray.length() % 8);
-        for(int i = 0; i < trash; i++)
-        {
-            //qDebug() << "Writting";
-            codFile.write("0");
-            //in1 << "0";
-        }
-    }
-
-    qDebug() << codArray.length() << trash << codArray.length() % 8;
-    //qDebug() << QString::number(trash, 2);
-
-    //codFile.close();
-    //codFile.open(QIODevice::ReadOnly);
-
-    codFile.seek(0);
-    //QFile codFileHex("codFileHex.huff");
-    //codFileHex.open(QIODevice::WriteOnly);
-    //QTextStream in2(&codFileHex);
-
-    QByteArray hexCodification;
-    bool ok;
-    long int k = trash + codArray.length();
-    for(long int i = 0; i != k; i += 8)
-    {
-        QByteArray line = codFile.read(8);
-        hexCodification.append(QByteArray::number(line.toInt(&ok, 2), 16));
-        //in2 << QString::number(line.toInt(&ok, 2), 16);
-        //qDebug() << line;
-        qDebug() << QByteArray::number(line.toInt(&ok, 2), 16);
-    }
-
-    qDebug() << hexCodification.length();
-    qDebug() << hexCodification;
-    //in2 << hexCodification;
-
-    //codFileHex.close();
+    codFile.write(aux2);
+    aux2.clear();
     codFile.close();
     //codFile.remove();
     file.close();
