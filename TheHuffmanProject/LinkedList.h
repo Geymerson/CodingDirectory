@@ -328,7 +328,6 @@ public:
 
             m_cursor->content = content;
             m_cursor->quantity = quantity;
-            //qDebug() << temp->content << m_cursor->content << this->currPos();
         }
     }
 };
