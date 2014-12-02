@@ -19,7 +19,7 @@ void charCodification(Node<int> *tree, Node<int> *left,
         if(tree->isLeaf(tree))
         {
            aux[tree->content] = sample;
-           qDebug() << tree->content << ":"<< aux[tree->content];
+           //qDebug() << tree->content << ":"<< aux[tree->content];
            sample.remove(sample.size() - 1, 1);
            return;
         }
@@ -137,6 +137,7 @@ int encoding(QString fileName)
             list.pInsert(tree->content, tree->quantity, tree);
         }
     }
+    //tree->show(tree);
 
 //############################ Tree representation ##################################
 
@@ -164,7 +165,7 @@ int encoding(QString fileName)
 
     QByteArray codArray;
     bool ok;
-    file.seek(0); //Move the cursor to the start of the
+    file.seek(0); //Move the cursor to the start of the file
 
     while (!file.atEnd())
     {
@@ -172,11 +173,14 @@ int encoding(QString fileName)
         for(int i = 0; i < line.size(); ++i)
         {
             codArray.append(codVector[(unsigned char) line.at(i)]);
-            if(!(codArray.length() % 8))
+            //qDebug() << codArray;
+            if(codArray.length() >= 8)
             {
-                char ch = (unsigned char) codArray.toInt(&ok,2);
+                aux3 = codArray.left(8);
+                char ch = (unsigned char) aux3.toInt(&ok,2);
                 aux2.append(ch);
-                codArray.clear();
+                aux3.clear();
+                codArray.remove(0, 8);
                 if(aux2.length() >= 1000)
                 {
                     codFile.write(aux2);

@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <Node.h>
 
-void treeCreat(Node<char> *tree, QByteArray *treeRep);
+void treeCreate(Node<char> *tree, QByteArray *treeRep);
 int decoding(QString fileName);
 
 #endif // DECODING_H

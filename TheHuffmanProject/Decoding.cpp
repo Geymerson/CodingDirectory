@@ -1,6 +1,6 @@
 #include "Decoding.h"
 
-void treeCreat(Node<char> *tree, QByteArray *treeRep)
+void treeCreate(Node<char> *tree, QByteArray *treeRep)
 {
     if(treeRep->length() == 0 || tree == 0)
     {
@@ -41,9 +41,11 @@ void treeCreat(Node<char> *tree, QByteArray *treeRep)
         treeRep->remove(0, 1);
         return;
     }
-    treeCreat(tree->left, treeRep);
-    treeCreat(tree->right, treeRep);
+    treeCreate(tree->left, treeRep);
+    treeCreate(tree->right, treeRep);
 }
+
+
 
 int decoding(QString fileName)
 {
@@ -51,54 +53,47 @@ int decoding(QString fileName)
 //############################## Openning the File ##################################
 
     QFile file(fileName);
-
     if(!file.open(QIODevice::ReadOnly))
     {
         qDebug() << "The file could not be read";
         return 1;
     }
 
+    QFile outFile("sampleFile.huff");
+    outFile.open(QIODevice::WriteOnly);
+
 //############################## Read Process #######################################
 
     QByteArray line = file.read(3);
-    QByteArray sample(QByteArray::number(line.at(0), 2).rightJustified(8, '0'));
+    QByteArray codArray, treeRep, aux1, aux2, aux3;
+    QString name;
+    int trash, treeSize, nameSize;
     bool ok;
 
-    QByteArray sample2(sample.right(5));
-    sample2.append(QByteArray::number(line.at(1), 2).rightJustified(8, '0'));
-    //qDebug() << sample2;
-    sample.truncate(3);
+    aux1.append(QByteArray::number(line.at(0), 2).rightJustified(8, '0').right(8));
+    aux2.append(aux1.right(5));
+    aux2.append(QByteArray::number(line.at(1), 2).rightJustified(8, '0').right(8));
+    aux1.truncate(3);
 
-    int trash = sample.toInt(&ok, 2);
-    int treeSize = sample2.toInt(&ok, 2);
-    int nameSize = line.at(2);
-
-    QString name = file.read(nameSize);
-    QByteArray treeRep = file.read(treeSize);
-//    qDebug() << treeRep;
+    trash = aux1.toInt(&ok, 2);
+    treeSize = aux2.toInt(&ok, 2);
+    nameSize = line.at(2);
+    name = file.read(nameSize);
+    treeRep = file.read(treeSize);
 
     Node<char> *tree = new Node<char>;
+    treeCreate(tree, &treeRep);
     Node<char> *tempCursor = tree;
-    treeCreat(tree, &treeRep);
-
     //tree->show(tree);
-
-    QFile testFile("sampleFile.huff");
-    testFile.open(QIODevice::WriteOnly);
-    QByteArray codArray;
 
     while(!file.atEnd())
     {
         line = file.read(8000);
-        //qDebug() << line;
         if(!file.atEnd())
         {
-            //qDebug() << line.length();
             for(int i = 0; i < line.length(); i++)
             {
                 QByteArray temp = QByteArray::number(line.at(i), 2).right(8).rightJustified(8,'0');
-                //qDebug() << temp;
-
                 for(int j = 0; j < temp.length(); j++)
                 {
                     if(temp.at(j) == '0')
@@ -107,19 +102,22 @@ int decoding(QString fileName)
                     }
                     else if(temp.at(j) == '1')
                     {
+                        if(tempCursor == 0)
+                        {
+                            qDebug() << "sim";
+                        }
                         tempCursor = tempCursor->right;
                     }
                     if(tempCursor->isLeaf(tempCursor))
                     {
                         codArray.append((char) tempCursor->content);
-                        qDebug() << tempCursor->content;
                         tempCursor = tree;
                     }
                 }
             }
             if(codArray.length() >= 8000)
             {
-                testFile.write(codArray);
+                outFile.write(codArray);
                 codArray.clear();
             }
         }
@@ -128,7 +126,6 @@ int decoding(QString fileName)
             for(int i = 0; i < line.length(); i++)
             {
                 QByteArray temp = QByteArray::number(line.at(i), 2).right(8).rightJustified(8,'0');
-                qDebug() << temp;
                 if(i == (line.length() - 1)) //last byte
                 {
                     for(int j = 0; j < temp.length() - trash; j++)
@@ -144,7 +141,6 @@ int decoding(QString fileName)
                         if(tempCursor->isLeaf(tempCursor))
                         {
                             codArray.append((char) tempCursor->content);
-                            qDebug() << tempCursor->content;
                             tempCursor = tree;
                         }
                     }
@@ -164,7 +160,6 @@ int decoding(QString fileName)
                         if(tempCursor->isLeaf(tempCursor))
                         {
                             codArray.append((char) tempCursor->content);
-                            qDebug() << tempCursor->content;
                             tempCursor = tree;
                         }
                     }
@@ -173,10 +168,9 @@ int decoding(QString fileName)
         }
     }
 
-    testFile.write(codArray);
-
+    outFile.write(codArray);
     tree->clear(tree);
     file.close();
-    testFile.close();
+    outFile.close();
     return 0;
 }

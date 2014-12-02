@@ -50,9 +50,12 @@ public:
     //checks if the node is a leaf
     bool isLeaf(Node *base)
     {
-        if(base->left == 0 && base->right == 0)
+        if(base != 0)
         {
-            return true;
+            if(base->left == 0 && base->right == 0)
+            {
+                return true;
+            }
         }
         return false;
     }
