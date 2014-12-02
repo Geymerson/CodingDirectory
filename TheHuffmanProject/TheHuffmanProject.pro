@@ -20,9 +20,11 @@ HEADERS += \
 	Encoding.h \
     Encoding.h \
     ListADT.h \
-    LinkedList.h
+    LinkedList.h \
+    Decoding.h
 
 
 SOURCES += main.cpp \
-    Encoding.cpp
+    Encoding.cpp \
+    Decoding.cpp
 

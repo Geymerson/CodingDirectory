@@ -1,14 +1,17 @@
 #ifndef ENCODING_H
 #define ENCODING_H
 
+#include <QFile>
+#include <QDebug>
 #include <QString>
-#include "Node.h"
 #include <QByteArray>
+#include "Node.h"
 #include "LinkedList.h"
+
 
 int encoding(QString fileName);
 
-bool charCodification(Node<int> *tree, Node<int> *left,
+void charCodification(Node<int> *tree, Node<int> *left,
                       Node<int> *right, QString aux[],
                       QString sample);
 

@@ -1,11 +1,7 @@
-#include <QFile>
-#include <QByteArray>
-#include <QDebug>
 #include "Encoding.h"
-#include "LinkedList.h"
 
 //Creates the codification of the characters
-bool charCodification(Node<int> *tree, Node<int> *left,
+void charCodification(Node<int> *tree, Node<int> *left,
                       Node<int> *right, QString aux[], QString sample)
 {
     if(tree != 0)
@@ -23,16 +19,16 @@ bool charCodification(Node<int> *tree, Node<int> *left,
         if(tree->isLeaf(tree))
         {
            aux[tree->content] = sample;
-           //qDebug() << tree->content << ":"<< aux[tree->content];
+           qDebug() << tree->content << ":"<< aux[tree->content];
            sample.remove(sample.size() - 1, 1);
-           return true;
+           return;
         }
         charCodification(tree->left, tree->left, tree->right, aux, sample);
         charCodification(tree->right, tree->left, tree->right, aux, sample);
         sample.remove(sample.size() - 1, 1);
-        return true;
+        return;
     }
-    return false;
+    return;
 }
 
 //Creates the representation of the tree
@@ -40,13 +36,13 @@ void treeRepresentation(Node<int> *tree, QByteArray *k)
 {
     if(tree->isLeaf(tree))
     {
-        if(tree->content == 40)
+        if(tree->content == 40 || tree->content == 42)
         {
-            k->append('*').append((unsigned char)tree->content);
+            k->append('*').append(tree->content);
         }
         else
         {
-            k->append((unsigned char)tree->content);
+            k->append(tree->content);
         }
         return;
     }
@@ -59,15 +55,15 @@ void treeRepresentation(Node<int> *tree, QByteArray *k)
 //Creates the file codification
 int encoding(QString fileName)
 {
+
+    QFile file(fileName);
+    QFile codFile("codFile.huff");
+    codFile.open(QIODevice::WriteOnly);
+
     QString aux1;
     QByteArray aux2, aux3;
     LinkedList<int> list; //list to create the tree
     int count[256] = {0};
-
-    QFile file(fileName);
-
-    QFile codFile("codFile.huff");
-    codFile.open(QIODevice::WriteOnly);
 
     aux2.append("00"); //First two bytes for trash and tree size
     aux2.append(fileName.length());
@@ -155,11 +151,13 @@ int encoding(QString fileName)
     QString codVector[256];
     if(tree->isLeaf(tree))
     {
+        //qDebug() << "Here 1";
         QString temp('0');
         codVector[(unsigned char)tree->content] = temp;
     }
     else
     {
+        //qDebug() << "Here 2";
         charCodification(tree, 0, 0, codVector, aux1);//Now CodVector has char's codification
     }
     int trash = 0;
@@ -203,27 +201,15 @@ int encoding(QString fileName)
         }
     }
     codFile.write(aux2);
+    codArray.clear();
     aux2.clear();
 
 //############################ Formating trash and treeSize #########################
 
-    QByteArray bTrash, treeSize;
-    bTrash.append(QByteArray::number(trash, 2));
-    treeSize.append(QByteArray::number(treeRep.length(), 2));
-
-    while((aux2.length() + bTrash.length()) != 3)
-    {
-        aux2.append('0');
-    }
-    aux2.append(bTrash);
-
-    while((aux3.length() + treeSize.length()) != 13)
-    {
-        aux3.append('0');
-    }
-    aux3.append(treeSize);
-    aux2.append(aux3);
-    aux3.clear();
+    aux2.append(QByteArray::number(trash, 2).rightJustified(3, '0'));
+    //qDebug() << aux2;
+    aux2.append(QByteArray::number(treeRep.length(), 2).rightJustified(13,'0'));
+    //qDebug() << aux2;
 
     codFile.seek(0);
     for(int i = 0; i < 16; i++)

@@ -21,6 +21,14 @@ public:
         this->right = 0;
     }
 
+    Node(E content)
+    {
+        this->content = content;
+        this->next = 0;
+        this->left = 0;
+        this->right = 0;
+    }
+
     Node(const E& value, const int& count)
     {
         this->content = value;
@@ -58,8 +66,21 @@ public:
         }
         clear(root->left);
         clear(root->right);
-        //qDebug() << "Deleting " << root->content;
         delete root;
+    }
+
+    void show(Node *root)
+    {
+        if(root == 0)
+        {
+            return;
+        }
+        show(root->left);
+        show(root->right);
+        if(this->isLeaf(root))
+        {
+            qDebug() << "Leaf Content:" << root->content;
+        }
     }
 };
 
