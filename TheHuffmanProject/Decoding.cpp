@@ -47,20 +47,17 @@ void treeCreate(Node<char> *tree, QByteArray *treeRep)
 
 
 
-int decoding(QString fileName)
+int decoding(QString ioFileName[])
 {
 
 //############################## Openning the File ##################################
 
-    QFile file(fileName);
+    QFile file(ioFileName[0]);
     if(!file.open(QIODevice::ReadOnly))
     {
         qDebug() << "The file could not be read";
         return 1;
     }
-
-    QFile outFile("sampleFile.huff");
-    outFile.open(QIODevice::WriteOnly);
 
 //############################## Read Process #######################################
 
@@ -74,17 +71,31 @@ int decoding(QString fileName)
     aux2.append(aux1.right(5));
     aux2.append(QByteArray::number(line.at(1), 2).rightJustified(8, '0').right(8));
     aux1.truncate(3);
+    aux3.append(line.at(2));
+    //qDebug() << aux3;
 
     trash = aux1.toInt(&ok, 2);
     treeSize = aux2.toInt(&ok, 2);
-    nameSize = line.at(2);
-    name = file.read(nameSize);
+    nameSize = aux3.toInt(&ok, 16);
+    name = file.read(nameSize); //Original name
     treeRep = file.read(treeSize);
+
+    if(ioFileName[1] != "oName") //If not the original name, use the name informed by the user
+    {
+        name = ioFileName[1];
+    }
+
+    QFile outFile(name);
+    outFile.open(QIODevice::WriteOnly);
+
+//############################## Creating the tree #######################################
 
     Node<char> *tree = new Node<char>;
     treeCreate(tree, &treeRep);
     Node<char> *tempCursor = tree;
     //tree->show(tree);
+
+//############################## Decodification process ####################################
 
     while(!file.atEnd())
     {
@@ -102,10 +113,6 @@ int decoding(QString fileName)
                     }
                     else if(temp.at(j) == '1')
                     {
-                        if(tempCursor == 0)
-                        {
-                            qDebug() << "sim";
-                        }
                         tempCursor = tempCursor->right;
                     }
                     if(tempCursor->isLeaf(tempCursor))

@@ -53,11 +53,23 @@ void treeRepresentation(Node<int> *tree, QByteArray *k)
 }
 
 //Creates the file codification
-int encoding(QString fileName)
+int encoding(QString ioFileName[])
 {
+    if(ioFileName[1] == "oName") //if original name used for the output file
+    {
+        int i = ioFileName[0].length();
+        int j = 1;
+        while(ioFileName[0].at(i - 1) != '.')
+        {
+            i--;
+            j++;
+        }
+        ioFileName[1] = ioFileName[0].left(ioFileName[0].length() - j); //Removing the .ext from the fileName
+    }
+    ioFileName[1].append(".huff"); //output file: fileName.huff
 
-    QFile file(fileName);
-    QFile codFile("codFile.huff");
+    QFile file(ioFileName[0]); //input file
+    QFile codFile(ioFileName[1]); //output file
     codFile.open(QIODevice::WriteOnly);
 
     QString aux1;
@@ -66,8 +78,9 @@ int encoding(QString fileName)
     int count[256] = {0};
 
     aux2.append("00"); //First two bytes for trash and tree size
-    aux2.append(fileName.length());
-    aux2.append(fileName);
+    QByteArray fileSize = QByteArray::number(ioFileName[0].length(), 16);
+    aux2.append(fileSize); //inserts the file size
+    aux2.append(ioFileName[0]); //inserts the file name
     codFile.write(aux2);
     aux2.clear();
 
@@ -216,7 +229,7 @@ int encoding(QString fileName)
     //qDebug() << aux2;
 
     codFile.seek(0);
-    for(int i = 0; i < 16; i++)
+    for(int i = 0; i < 16; i++) //inserting the first and the second byte for trash and tree size
     {
         aux3.append(aux2.at(i));
         if(aux3.length() == 8)

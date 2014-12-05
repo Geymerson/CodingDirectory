@@ -21,10 +21,12 @@ HEADERS += \
     Encoding.h \
     ListADT.h \
     LinkedList.h \
-    Decoding.h
+	Decoding.h \
+	HuffmanInfo.h
 
 
 SOURCES += main.cpp \
     Encoding.cpp \
-    Decoding.cpp
+	Decoding.cpp \
+	HuffmanInfo.cpp
 

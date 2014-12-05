@@ -9,7 +9,7 @@
 #include "LinkedList.h"
 
 
-int encoding(QString fileName);
+int encoding(QString ioFileName[]);
 
 void charCodification(Node<int> *tree, Node<int> *left,
                       Node<int> *right, QString aux[],

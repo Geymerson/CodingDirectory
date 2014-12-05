@@ -8,6 +8,6 @@
 #include <Node.h>
 
 void treeCreate(Node<char> *tree, QByteArray *treeRep);
-int decoding(QString fileName);
+int decoding(QString ioFileName[]);
 
 #endif // DECODING_H
