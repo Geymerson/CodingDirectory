@@ -11,7 +11,7 @@ void showInfo()
     qDebug() << "\t <huffman arquivo.huff -d /home/user/destino> para descomprimir no diretorio desejado\n";
 }
 
-void error(bool value)
+void codError(bool value)
 {
     if(!value)
     {

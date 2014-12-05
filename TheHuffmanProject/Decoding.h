@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QDebug>
 #include <Node.h>
+#include "HuffmanInfo.h"
 
 void treeCreate(Node<char> *tree, QByteArray *treeRep);
 int decoding(QString ioFileName[]);

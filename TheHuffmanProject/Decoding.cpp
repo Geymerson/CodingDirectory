@@ -67,6 +67,8 @@ int decoding(QString ioFileName[])
     int trash, treeSize, nameSize;
     bool ok;
 
+    //qDebug() << file.pos();
+
     aux1.append(QByteArray::number(line.at(0), 2).rightJustified(8, '0').right(8));
     aux2.append(aux1.right(5));
     aux2.append(QByteArray::number(line.at(1), 2).rightJustified(8, '0').right(8));
@@ -76,9 +78,12 @@ int decoding(QString ioFileName[])
 
     trash = aux1.toInt(&ok, 2);
     treeSize = aux2.toInt(&ok, 2);
-    nameSize = aux3.toInt(&ok, 16);
+    nameSize = QByteArray::number(aux3.at(0), 10).toInt(&ok, 10);
+    //qDebug() << nameSize;
     name = file.read(nameSize); //Original name
+    //qDebug() << file.pos();
     treeRep = file.read(treeSize);
+    //qDebug() << treeRep;
 
     if(ioFileName[1] != "oName") //If not the original name, use the name informed by the user
     {
@@ -99,7 +104,7 @@ int decoding(QString ioFileName[])
 
     while(!file.atEnd())
     {
-        line = file.read(8000);
+        line = file.read(5000000); //5mb
         if(!file.atEnd())
         {
             for(int i = 0; i < line.length(); i++)
@@ -115,6 +120,7 @@ int decoding(QString ioFileName[])
                     {
                         tempCursor = tempCursor->right;
                     }
+                    codError(tempCursor);
                     if(tempCursor->isLeaf(tempCursor))
                     {
                         codArray.append((char) tempCursor->content);
@@ -122,7 +128,7 @@ int decoding(QString ioFileName[])
                     }
                 }
             }
-            if(codArray.length() >= 8000)
+            if(codArray.length() >= 5000000)
             {
                 outFile.write(codArray);
                 codArray.clear();
@@ -145,6 +151,7 @@ int decoding(QString ioFileName[])
                         {
                             tempCursor = tempCursor->right;
                         }
+                        codError(tempCursor);
                         if(tempCursor->isLeaf(tempCursor))
                         {
                             codArray.append((char) tempCursor->content);
@@ -164,6 +171,7 @@ int decoding(QString ioFileName[])
                         {
                             tempCursor = tempCursor->right;
                         }
+                        codError(tempCursor);
                         if(tempCursor->isLeaf(tempCursor))
                         {
                             codArray.append((char) tempCursor->content);

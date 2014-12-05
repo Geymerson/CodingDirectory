@@ -78,8 +78,9 @@ int encoding(QString ioFileName[])
     int count[256] = {0};
 
     aux2.append("00"); //First two bytes for trash and tree size
-    QByteArray fileSize = QByteArray::number(ioFileName[0].length(), 16);
-    aux2.append(fileSize); //inserts the file size
+    unsigned char fileNameSize = ioFileName[0].length();
+    qDebug() << fileNameSize;
+    aux2.append(fileNameSize); //inserts the file size
     aux2.append(ioFileName[0]); //inserts the file name
     codFile.write(aux2);
     aux2.clear();

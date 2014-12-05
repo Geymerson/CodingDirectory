@@ -4,6 +4,6 @@
 #include <QDebug>
 
 void showInfo();
-void error();
+void codError(bool value);
 
 #endif // HUFFMANINFO_H
