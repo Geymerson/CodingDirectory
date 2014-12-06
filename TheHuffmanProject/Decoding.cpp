@@ -120,7 +120,7 @@ int decoding(QString ioFileName[])
                     {
                         tempCursor = tempCursor->right;
                     }
-                    codError(tempCursor);
+                    codError(tempCursor);//checkincg for codification errors
                     if(tempCursor->isLeaf(tempCursor))
                     {
                         codArray.append((char) tempCursor->content);

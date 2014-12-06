@@ -2,8 +2,7 @@
 
 void showInfo()
 {
-    qDebug() << "Comando invalido";
-    qDebug() << "Use:";
+    qDebug() << "Comando invalido! Use:";
     qDebug() << "\t <huffman -c arquivo_origem.x -o arquivo_de_saida.huff> para comprimir e gerar"
              << "um arquivo de saida arquivo_de_saida.huff";
     qDebug() << "\t <huffman -c arquivo.x> para comprimir o arquivo.x e gerar um arquivo de saida 'arquivo.huff'";

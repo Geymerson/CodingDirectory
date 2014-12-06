@@ -3,7 +3,6 @@
 
 #include "ListADT.h"
 #include "Node.h"
-#include <QDebug>
 
 template<class E>
 class LinkedList : public List<E>

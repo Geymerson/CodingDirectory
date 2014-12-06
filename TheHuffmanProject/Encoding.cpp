@@ -55,6 +55,16 @@ void treeRepresentation(Node<int> *tree, QByteArray *k)
 //Creates the file codification
 int encoding(QString ioFileName[])
 {
+    QFile file(ioFileName[0]); //input file
+
+//############################## Openning the File ##################################
+
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "The file could not be read";
+        return 1;
+    }
+
     if(ioFileName[1] == "oName") //if original name used for the output file
     {
         int i = ioFileName[0].length();
@@ -65,10 +75,9 @@ int encoding(QString ioFileName[])
             j++;
         }
         ioFileName[1] = ioFileName[0].left(ioFileName[0].length() - j); //Removing the .ext from the fileName
+        ioFileName[1].append(".huff"); //output file: fileName.huff
     }
-    ioFileName[1].append(".huff"); //output file: fileName.huff
 
-    QFile file(ioFileName[0]); //input file
     QFile codFile(ioFileName[1]); //output file
     codFile.open(QIODevice::WriteOnly);
 
@@ -79,19 +88,11 @@ int encoding(QString ioFileName[])
 
     aux2.append("00"); //First two bytes for trash and tree size
     unsigned char fileNameSize = ioFileName[0].length();
-    qDebug() << fileNameSize;
+    //qDebug() << fileNameSize;
     aux2.append(fileNameSize); //inserts the file size
     aux2.append(ioFileName[0]); //inserts the file name
     codFile.write(aux2);
     aux2.clear();
-
-//############################## Openning the File ##################################
-
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "The file could not be read";
-        return 1;
-    }
 
 //################## Character count and making the the linked list #################
 
@@ -224,9 +225,9 @@ int encoding(QString ioFileName[])
 
 //############################ Formating trash and treeSize #########################
 
-    aux2.append(QByteArray::number(trash, 2).rightJustified(3, '0'));
+    aux2.append(QByteArray::number(trash, 2).rightJustified(3, '0')); //trash
     //qDebug() << aux2;
-    aux2.append(QByteArray::number(treeRep.length(), 2).rightJustified(13,'0'));
+    aux2.append(QByteArray::number(treeRep.length(), 2).rightJustified(13,'0')); //treeSize
     //qDebug() << aux2;
 
     codFile.seek(0);

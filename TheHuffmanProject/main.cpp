@@ -4,9 +4,9 @@
 
 int main(int argc, char *argv[])
 {
-    QString filePath, extenCheck;
-    QString ioFileName[2];
-    QString mode[2];
+    QString filePath, extenCheck; // file path /extension check variable
+    QString ioFileName[2]; // input/output file name
+    QString mode[2]; //compress or decompress mode -c/-d
 
     if(argc == 5 || argc == 3) //compress
     {
@@ -19,17 +19,17 @@ int main(int argc, char *argv[])
             extenCheck = ioFileName[1].right(5);
             if(extenCheck == ".huff")
             {
-                encoding(ioFileName);
+                encoding(ioFileName);//encoding function
             }
             else
             {
-                showInfo();
+                showInfo(); //informations about compressing and decompressing
             }
         }
         else if(argc == 3 && mode[0] == "-c")
         {
             ioFileName[1] = "oName";
-            encoding(ioFileName);
+            encoding(ioFileName); //decoding function
         }
         else
         {
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            qDebug() << "Not a .huff file";
+            qDebug() << "\nExtensao nao .huff";
             showInfo();
         }
     }
