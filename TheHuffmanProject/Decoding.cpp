@@ -59,6 +59,8 @@ int decoding(QString ioFileName[])
         return 1;
     }
 
+    QDir myOutputPath(ioFileName[1]);
+
 //############################## Read Process #######################################
 
     QByteArray line = file.read(3);
@@ -84,8 +86,19 @@ int decoding(QString ioFileName[])
     //qDebug() << file.pos();
     treeRep = file.read(treeSize);
     //qDebug() << treeRep;
+    
 
-    if(ioFileName[1] != "oName") //If not the original name, use the name informed by the user
+    if(myOutputPath.exists()) //Creating the output file in a specific existing path
+    {
+        if(ioFileName[1].at(ioFileName[1].length() - 1) != '/') //if last path's char not '/'
+        {                                                        //(e.g "filePath/"), append '/'
+            ioFileName[1].append('/');
+        }
+        ioFileName[1].append(name);
+        name = ioFileName[1];
+        qDebug() << name;
+    }
+    else if(ioFileName[1] != "oName") //If not the original name, use the name informed by the user
     {
         name = ioFileName[1];
     }

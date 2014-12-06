@@ -94,7 +94,7 @@ int encoding(QString ioFileName[])
     codFile.write(aux2);
     aux2.clear();
 
-//################## Character count and making the the linked list #################
+//################## Character count and making the linked list #################
 
     while (!file.atEnd())
     {
@@ -131,8 +131,8 @@ int encoding(QString ioFileName[])
             sum += list.getQuantity(); //Holds the sum of the two first nodes quantity
             list.moveToStart(); //moves to the start of the list
             tree = new Node<int>(0, sum);
-            if(list.getPointer())
-            {
+            if(list.getPointer())//if the item at the current position is a node
+            {                       //tree->left points to it's memory adress.
                 tree->left = list.getPointer();
             }
             else
@@ -230,7 +230,7 @@ int encoding(QString ioFileName[])
     aux2.append(QByteArray::number(treeRep.length(), 2).rightJustified(13,'0')); //treeSize
     //qDebug() << aux2;
 
-    codFile.seek(0);
+    codFile.seek(0);//set codFile position at 0
     for(int i = 0; i < 16; i++) //inserting the first and the second byte for trash and tree size
     {
         aux3.append(aux2.at(i));

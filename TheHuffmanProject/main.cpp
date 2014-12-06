@@ -1,6 +1,7 @@
 #include "Decoding.h"
 #include "Encoding.h"
 #include "HuffmanInfo.h"
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
@@ -11,19 +12,24 @@ int main(int argc, char *argv[])
     if(argc == 5 || argc == 3) //compress
     {
         ioFileName[0] = argv[2]; //input file name
+        //qDebug() << ioFileName[0];
         mode[0] = argv[1]; //-c
-        mode[1] = argv[3]; //-o
-        if(argc == 5 && mode[0] == "-c" && mode[1] == "-o")
+        if(argc == 5 && mode[0] == "-c")
         {
-            ioFileName[1] = argv[4]; //output file name
-            extenCheck = ioFileName[1].right(5);
-            if(extenCheck == ".huff")
+            mode[1] = argv[3]; //-o
+            if(mode[1] == "-o")
             {
-                encoding(ioFileName);//encoding function
-            }
-            else
-            {
-                showInfo(); //informations about compressing and decompressing
+                ioFileName[1] = argv[4]; //output file name
+                extenCheck = ioFileName[1].right(5);
+                if(extenCheck == ".huff")
+                {
+                    encoding(ioFileName);//encoding function
+                }
+                else
+                {
+                    qDebug() << "\nExtensao nao .huff\n";
+                    showInfo(); //informations about compressing and decompressing
+                }
             }
         }
         else if(argc == 3 && mode[0] == "-c")
@@ -44,11 +50,20 @@ int main(int argc, char *argv[])
         {
             if(argc == 4)
             {
-                filePath = argv[3];
-                mode[0] = argv[2];
+                mode[0] = argv[2]; //-d
                 if(mode[0] == "-d")
                 {
-                    //Unfinished
+                    filePath = argv[3];//home/user/path
+                    QDir savingPath(filePath);
+                    if(savingPath.exists())
+                    {
+                        ioFileName[1] = filePath;
+                        decoding(ioFileName);
+                    }
+                    else
+                    {
+                        qDebug() << "\nDiretorio inexistente\n";
+                    }
                 }
                 else
                 {
@@ -63,7 +78,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            qDebug() << "\nExtensao nao .huff";
+            qDebug() << "\nExtensao nao .huff\n";
             showInfo();
         }
     }
