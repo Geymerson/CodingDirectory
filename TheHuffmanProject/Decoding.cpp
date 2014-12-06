@@ -61,7 +61,7 @@ int decoding(QString ioFileName[])
 
     QDir myOutputPath(ioFileName[1]);
 
-//############################## Read Process #######################################
+//################################## Read Process ###################################
 
     QByteArray line = file.read(3);
     QByteArray codArray, treeRep, aux1, aux2, aux3;
@@ -69,25 +69,18 @@ int decoding(QString ioFileName[])
     int trash, treeSize, nameSize;
     bool ok;
 
-    //qDebug() << file.pos();
-
-    aux1.append(QByteArray::number(line.at(0), 2).rightJustified(8, '0').right(8));
-    aux2.append(aux1.right(5));
-    aux2.append(QByteArray::number(line.at(1), 2).rightJustified(8, '0').right(8));
-    aux1.truncate(3);
-    aux3.append(line.at(2));
-    //qDebug() << aux3;
+    aux1.append(QByteArray::number(line.at(0), 2).rightJustified(8, '0').right(8)); //8 bits at the first byte
+    aux2.append(aux1.right(5)); //the last 5 bits represents the firt 5 bits of the tree size
+    aux2.append(QByteArray::number(line.at(1), 2).rightJustified(8, '0').right(8)); //5 + 8 bits of the second byte = 13 bits to tree size
+    aux1.truncate(3); //getting the firt 3 bits of the first byte to the trash size
+    aux3.append(line.at(2));//name size
 
     trash = aux1.toInt(&ok, 2);
     treeSize = aux2.toInt(&ok, 2);
     nameSize = QByteArray::number(aux3.at(0), 10).toInt(&ok, 10);
-    //qDebug() << nameSize;
     name = file.read(nameSize); //Original name
-    //qDebug() << file.pos();
     treeRep = file.read(treeSize);
-    //qDebug() << treeRep;
     
-
     if(myOutputPath.exists()) //Creating the output file in a specific existing path
     {
         if(ioFileName[1].at(ioFileName[1].length() - 1) != '/') //if last path's char not '/'
@@ -96,7 +89,6 @@ int decoding(QString ioFileName[])
         }
         ioFileName[1].append(name);
         name = ioFileName[1];
-        qDebug() << name;
     }
     else if(ioFileName[1] != "oName") //If not the original name, use the name informed by the user
     {
@@ -106,14 +98,13 @@ int decoding(QString ioFileName[])
     QFile outFile(name);
     outFile.open(QIODevice::WriteOnly);
 
-//############################## Creating the tree #######################################
+//############################## Creating the tree ##################################
 
     Node<char> *tree = new Node<char>;
     treeCreate(tree, &treeRep);
-    Node<char> *tempCursor = tree;
-    //tree->show(tree);
+    Node<char> *tempCursor = tree;  
 
-//############################## Decodification process ####################################
+//############################## Decodification process #############################
 
     while(!file.atEnd())
     {
